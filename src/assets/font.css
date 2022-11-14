@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Itim&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;800&display=swap");
+:root {
+  --mono-font: "Inconsolata"; /* 400 800 weigh */
+  --hand-write-font: "Itim"; /* 400 weight  */
+}
+
+#app {
+  font-family: "Itim", "Inconsolata", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #272d2f;
+}

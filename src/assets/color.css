@@ -1,0 +1,10 @@
+/* color */
+:root {
+  --primary: #fe724c;
+  --primary-darker: #d45835;
+  --secondary: #ffc529;
+  --black: #272d2f;
+  --grey: #b8b8b8;
+  --light: #f2f2f2;
+  --white: #ffffff;
+}
