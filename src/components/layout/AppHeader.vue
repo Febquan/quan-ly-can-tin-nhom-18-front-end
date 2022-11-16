@@ -9,30 +9,98 @@
       </router-link>
 
       <div>
-        <a-button size="medium">
+        <a href="#" v-if="isLogin || isGuest">
+          <a-badge :count="numberOfCardItem" title="Orders">
+            <ShoppingCartOutlined
+              style="font-size: 30px; color: var(--white)"
+            ></ShoppingCartOutlined>
+          </a-badge>
+        </a>
+        <a-button
+          size="medium"
+          @click="toggleLogin"
+          v-if="!isLogin && !isGuest"
+        >
           <template #icon>
             <LoginOutlined />
           </template>
           Login
         </a-button>
-        <a-button size="medium">
+        <a-button
+          size="medium"
+          @click="toggleSignUp"
+          v-if="!isLogin && !isGuest"
+        >
           <template #icon>
             <UsergroupAddOutlined />
           </template>
           Sign Up
         </a-button>
+        <a-button size="medium" @click="logout" v-if="isLogin && !isGuest">
+          <template #icon>
+            <UsergroupAddOutlined />
+          </template>
+          Log Out
+        </a-button>
       </div>
     </div>
   </section>
+  <LoginModal
+    v-if="!isLogin"
+    @closeLoginModal="toggleLogin"
+    :visible="showLogin"
+  ></LoginModal>
+  <SignUpModal
+    v-if="!isLogin"
+    @closeSignUpModal="toggleSignUp"
+    :visible="showSignUp"
+  ></SignUpModal>
 </template>
 
 <script>
-import { LoginOutlined } from "@ant-design/icons-vue";
-import { UsergroupAddOutlined } from "@ant-design/icons-vue";
+import {
+  UsergroupAddOutlined,
+  ShoppingCartOutlined,
+  LoginOutlined,
+} from "@ant-design/icons-vue";
+import LoginModal from "@/components/views/AuthView/LoginModal.vue";
+import SignUpModal from "@/components/views/AuthView/SignUpModal.vue";
 export default {
   components: {
     LoginOutlined,
     UsergroupAddOutlined,
+    LoginModal,
+    SignUpModal,
+    ShoppingCartOutlined,
+  },
+  data() {
+    return {
+      showLogin: false,
+      showSignUp: false,
+    };
+  },
+  computed: {
+    isLogin() {
+      return this.$store.getters.getLoginState;
+    },
+    isGuest() {
+      return this.$store.getters.getGuestState;
+    },
+    numberOfCardItem() {
+      return this.$store.getters["cart/getCartNumber"];
+    },
+  },
+  methods: {
+    toggleLogin() {
+      this.showLogin = !this.showLogin;
+    },
+    logout() {
+      this.$axios.defaults.headers.common["Authorization"] = "";
+      this.$store.commit("toggleIsLogin");
+    },
+    toggleSignUp() {
+      this.showSignUp = !this.showSignUp;
+    },
   },
 };
 </script>
@@ -41,8 +109,6 @@ export default {
 section {
   height: 10vh;
   width: 100%;
-  position: fixed;
-  top: 0;
   background-color: var(--primary);
   border-bottom: 3px solid var(--primary-darker);
   box-shadow: 0px -3px 20px var(--black);
@@ -58,6 +124,7 @@ section > div {
 }
 section > div > div {
   display: flex;
+  align-items: center;
   gap: 16px;
 }
 
@@ -71,7 +138,7 @@ section > div > div {
 .logo-name {
   color: var(--white);
   margin: 0;
-  font-size: 2rem;
+  font-size: 1.7rem;
   font-weight: 800;
 }
 .logo {

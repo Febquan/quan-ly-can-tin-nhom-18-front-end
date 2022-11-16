@@ -1,22 +1,32 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
-
+import WelcomeView from "@/components/views/WelcomeView/WelcomeView.vue";
+import RestorePassword from "@/components/views/AuthView/RestorePassword.vue";
+import FoodView from "@/components/views/FoodView/FoodView.vue";
 const routes = [
   {
     path: "/",
-    name: "home",
-    component: HomeView,
+    name: "WelcomeView",
+    component: WelcomeView,
   },
-
   {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+    path: "/user/restorePassword/:token",
+    name: "restorePassword",
+    component: RestorePassword,
   },
+  {
+    path: "/user/FoodView",
+    name: "FoodView",
+    component: FoodView,
+  },
+  // {
+  //   path: "/about",
+  //   name: "about",
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () =>
+  //     import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  // },
 ];
 
 const router = createRouter({

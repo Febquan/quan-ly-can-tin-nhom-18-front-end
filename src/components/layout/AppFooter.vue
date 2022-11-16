@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="footer-container"></div>
+    <div class="footer-container">© 2022 Nhóm 18</div>
   </section>
 </template>
 
@@ -8,8 +8,9 @@
 
 <style scoped>
 .footer-container {
-  height: 2vh;
-  background-color: var(--primary-darker);
+  height: 3vh;
+  background-color: var(--primary);
+  color: var(--white);
   position: relative;
   bottom: 0;
 }
