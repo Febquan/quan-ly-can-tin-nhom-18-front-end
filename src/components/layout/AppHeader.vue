@@ -9,7 +9,7 @@
       </router-link>
 
       <div>
-        <a href="#" v-if="isLogin || isGuest">
+        <a @click="toggleOrderModal" v-if="isLogin || isGuest">
           <a-badge :count="numberOfCardItem" title="Orders">
             <ShoppingCartOutlined
               style="font-size: 30px; color: var(--white)"
@@ -55,6 +55,8 @@
     @closeSignUpModal="toggleSignUp"
     :visible="showSignUp"
   ></SignUpModal>
+  <OrderModalVue :visible="showOrderModal" @closeOrderModal="toggleOrderModal">
+  </OrderModalVue>
 </template>
 
 <script>
@@ -65,6 +67,7 @@ import {
 } from "@ant-design/icons-vue";
 import LoginModal from "@/components/views/AuthView/LoginModal.vue";
 import SignUpModal from "@/components/views/AuthView/SignUpModal.vue";
+import OrderModalVue from "../views/OrderView/OrderModal.vue";
 export default {
   components: {
     LoginOutlined,
@@ -72,11 +75,13 @@ export default {
     LoginModal,
     SignUpModal,
     ShoppingCartOutlined,
+    OrderModalVue,
   },
   data() {
     return {
       showLogin: false,
       showSignUp: false,
+      showOrderModal: false,
     };
   },
   computed: {
@@ -91,6 +96,9 @@ export default {
     },
   },
   methods: {
+    toggleOrderModal() {
+      this.showOrderModal = !this.showOrderModal;
+    },
     toggleLogin() {
       this.showLogin = !this.showLogin;
     },
