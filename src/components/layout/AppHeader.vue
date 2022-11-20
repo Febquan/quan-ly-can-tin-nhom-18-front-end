@@ -45,6 +45,7 @@
       </div>
     </div>
   </section>
+  <div class="fake-section"></div>
   <LoginModal
     v-if="!isLogin"
     @closeLoginModal="toggleLogin"
@@ -105,6 +106,8 @@ export default {
     logout() {
       this.$axios.defaults.headers.common["Authorization"] = "";
       this.$store.commit("toggleIsLogin");
+      localStorage.clear("token");
+      this.$router.replace("/");
     },
     toggleSignUp() {
       this.showSignUp = !this.showSignUp;
@@ -114,7 +117,13 @@ export default {
 </script>
 
 <style scoped>
+.fake-section {
+  height: 10vh;
+}
 section {
+  position: fixed;
+  isolation: isolate;
+  z-index: 1000;
   height: 10vh;
   width: 100%;
   background-color: var(--primary);

@@ -64,6 +64,7 @@ export default {
         );
         const token = res.token;
         this.$axios.defaults.headers.common["Authorization"] = token;
+        localStorage.setItem("token", token);
         this.isLoading = false;
         this.$toast.success(`Đăng nhập thành công !`, {
           position: "bottom",
@@ -77,10 +78,9 @@ export default {
         //   console.log("helo");
         // });
         this.$emit("closeLoginModal");
-        setTimeout(() => {
-          this.$store.commit("toggleIsLogin");
-          this.$router.push({ name: "FoodView" });
-        }, 2500);
+
+        this.$store.commit("toggleIsLogin");
+        this.$router.push({ name: "FoodView" });
       } catch (error) {
         this.isLoading = false;
         this.$toast.error(error.response.data.message, {

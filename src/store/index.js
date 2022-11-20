@@ -8,7 +8,7 @@ const productsModule = {
   state() {
     return {
       dish: [],
-      FFAD: [],
+      fastFoodAndDrink: [],
       extraFood: [],
     };
   },
@@ -34,8 +34,11 @@ const productsModule = {
     getDish(state) {
       return state.dish;
     },
-    getFastFoodAndDrink(state) {
-      return state.fastFoodAndDrink;
+    getDrink(state) {
+      return state.fastFoodAndDrink.filter((item) => item.isDrink);
+    },
+    getFastFood(state) {
+      return state.fastFoodAndDrink.filter((item) => !item.isDrink);
     },
     getExtraFood(state) {
       return state.extraFood;

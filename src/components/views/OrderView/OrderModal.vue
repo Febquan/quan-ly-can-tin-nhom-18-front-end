@@ -12,6 +12,7 @@
         <a-button
           type="primary"
           @click="convertCartToSendItem"
+          :disabled="!hasAnyItem"
           v-if="!isLoading"
           >Đặt đơn</a-button
         >
@@ -31,7 +32,7 @@
                     </div>
                     <div
                       class="extra-food"
-                      v-for="extraFood in item.extraFoods"
+                      v-for="extraFood in item.extraFood"
                       :key="extraFood.object._id"
                     >
                       <h4>
@@ -50,8 +51,14 @@
           </template>
         </a-list>
       </div>
-      <a-divider style="border-color: #7cb305; margin: 0" dashed />
-      <h2 class="total-cost">Total cost: {{ this.getTotalCost }} VNĐ</h2>
+      <a-divider
+        style="border-color: #7cb305; margin: 0"
+        dashed
+        v-if="hasAnyItem"
+      />
+      <h2 class="total-cost" v-if="hasAnyItem">
+        Total cost: {{ this.getTotalCost }} VNĐ
+      </h2>
     </div>
   </a-modal>
 </template>
@@ -68,6 +75,9 @@ export default {
     getTotalCost() {
       return this.getCart.reduce((sum, el) => sum + el.cost, 0);
     },
+    hasAnyItem() {
+      return this.getCart.length > 0;
+    },
   },
   methods: {
     async convertCartToSendItem() {
@@ -77,11 +87,11 @@ export default {
         const content = {
           arrive_at: "2022-11-06T04:25:38.628Z",
           email: "febquanwork@gmail.com",
+          status: "onsite",
           onSite: true,
           order,
         };
-        const res = await this.$axios.post("/user/placeOrder", { ...content });
-        console.log(res);
+        await this.$axios.post("/user/placeOrder", { ...content });
       } catch (err) {
         console.log(err);
       }

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import WelcomeView from "@/components/views/WelcomeView/WelcomeView.vue";
 import RestorePassword from "@/components/views/AuthView/RestorePassword.vue";
 import FoodView from "@/components/views/FoodView/FoodView.vue";
+import store from "@/store";
 const routes = [
   {
     path: "/",
@@ -17,6 +18,7 @@ const routes = [
     path: "/user/FoodView",
     name: "FoodView",
     component: FoodView,
+    meta: { requiresAuth: true },
   },
   // {
   //   path: "/about",
@@ -28,10 +30,20 @@ const routes = [
   //     import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
   // },
 ];
-
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
 
+router.beforeEach(function (to, _, next) {
+  if (
+    to.meta.requiresAuth &&
+    !store.getters.getLoginState &&
+    !store.getters.getGuestState
+  ) {
+    next("/");
+  } else {
+    next();
+  }
+});
 export default router;

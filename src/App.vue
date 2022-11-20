@@ -13,5 +13,13 @@ export default {
     AppHeader,
     AppFooter,
   },
+  created() {
+    const token = localStorage.getItem("token");
+    if (token) {
+      this.$axios.defaults.headers.common["Authorization"] = token;
+      this.$store.commit("toggleIsLogin");
+      this.$router.replace("/user/FoodView");
+    }
+  },
 };
 </script>
