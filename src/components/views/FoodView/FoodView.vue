@@ -16,14 +16,16 @@
         v-for="item in getFastFood"
         :FastFood="item"
         :key="item._id"
+        @click="addFFADHandler(item)"
       ></FastFoodCardVue>
     </div>
     <h1 class="main-food-title" v-if="!isLoading">Thức uống</h1>
-    <div class="fast-food-container" v-if="!isLoading">
+    <div class="drink-container" v-if="!isLoading">
       <FastFoodCardVue
         v-for="item in getDrink"
         :FastFood="item"
         :key="item._id"
+        @click="addFFADHandler(item)"
       ></FastFoodCardVue>
     </div>
   </div>
@@ -32,19 +34,25 @@
     @closeAddDishModel="toggleAddDishVisible"
     :dish="dish"
   ></AddDishModalVue>
+  <AddFFADModal
+    :visible="addFFADVisible"
+    @closeAddFFADModel="toggleAddFFADVisible"
+    :FFAD="fastFoodAndDrink"
+  ></AddFFADModal>
 </template>
 
 <script>
 import MainFoodCardVue from "./FoodCard/MainFoodCard.vue";
 import AddDishModalVue from "./FoodSection/AddDishModal.vue";
 import FastFoodCardVue from "./FoodCard/FastFoodCard.vue";
-
+import AddFFADModal from "./FoodSection/AddFFADModal.vue";
 import { mapGetters } from "vuex";
 export default {
   components: {
     MainFoodCardVue,
     AddDishModalVue,
     FastFoodCardVue,
+    AddFFADModal,
   },
   async created() {
     await this.fetchAllFood();
@@ -54,9 +62,16 @@ export default {
     toggleAddDishVisible() {
       this.addDishVisible = !this.addDishVisible;
     },
+    toggleAddFFADVisible() {
+      this.addFFADVisible = !this.addFFADVisible;
+    },
     addDishHandler(dish) {
       this.toggleAddDishVisible();
       this.dish = dish;
+    },
+    addFFADHandler(FFAD) {
+      this.toggleAddFFADVisible();
+      this.fastFoodAndDrink = FFAD;
     },
     async fetchAllFood() {
       await this.$store.dispatch("prods/fetchAllData");
@@ -74,6 +89,7 @@ export default {
   data() {
     return {
       addDishVisible: false,
+      addFFADVisible: false,
       isLoading: true,
       dish: {},
       fastFoodAndDrink: {},
@@ -89,7 +105,6 @@ export default {
   /* border: 2px dashed var(--black);
   border-radius: 40px; */
   width: 90%;
-
   overflow-y: auto;
   row-gap: 30px;
   column-gap: 20px;
@@ -116,7 +131,6 @@ export default {
 .drink-container,
 .fast-food-container {
   width: 90%;
-
   justify-items: center;
   align-content: center;
   padding: 40px;

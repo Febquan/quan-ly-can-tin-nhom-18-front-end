@@ -12,7 +12,7 @@
         <a-button
           type="primary"
           @click="convertCartToSendItem"
-          :disabled="!hasAnyItem"
+          :disabled="!hasAnyItem || !email || !arrive_at"
           v-if="!isLoading"
           >Đặt đơn</a-button
         >
@@ -27,7 +27,9 @@
                 <template #title>
                   <div class="order-list">
                     <div class="main-food">
-                      <h3>{{ item.object.name }}</h3>
+                      <h3>
+                        {{ item.object.name + ` (${item.quantity})` }}
+                      </h3>
                       <h3>{{ item.object.price }} VNĐ</h3>
                     </div>
                     <div
@@ -36,7 +38,9 @@
                       :key="extraFood.object._id"
                     >
                       <h4>
-                        +{{ extraFood.object.name + `(${extraFood.quantity})` }}
+                        +{{
+                          extraFood.object.name + ` (${extraFood.quantity})`
+                        }}
                       </h4>
                       <h4>
                         {{ extraFood.object.price * extraFood.quantity }} VNĐ
@@ -59,12 +63,36 @@
       <h2 class="total-cost" v-if="hasAnyItem">
         Total cost: {{ this.getTotalCost }} VNĐ
       </h2>
+      <br />
+      <div class="order-info">
+        <h3>Xin vui lòng nhập thông tin đơn hàng</h3>
+        <a-input v-if="isGuest" v-model:value="email" placeholder="Email" />
+        <p class="noti-p" v-if="isGuest && !email">
+          Vì bạn không đăng nhập nên phải cần một tài khoản email để theo dõi
+          đơn hàng
+        </p>
+
+        <a-date-picker
+          v-if="!isGuest"
+          format="HH:mm DD/MM/YYYY"
+          v-model:value="arrive_at"
+          @change="cout"
+          :disabled-date="disabledDate"
+          :disabledTime="disabledTime"
+          placeholder="Thời gian nhận hàng (bắt buộc)"
+          :show-time="{ defaultValue: dayjs('00:00:00', 'HH:mm') }"
+        />
+        <a-checkbox class="check-box" v-model:checked="onSite"
+          >Ăn tại căn tin ?</a-checkbox
+        >
+      </div>
     </div>
   </a-modal>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import dayjs from "dayjs";
 export default {
   name: "OrderModal",
   props: {
@@ -78,51 +106,62 @@ export default {
     hasAnyItem() {
       return this.getCart.length > 0;
     },
+    isGuest() {
+      return this.$store.getters.getGuestState;
+    },
   },
   methods: {
+    getDisabledHours() {
+      var hours = [];
+      for (var i = 0; i < dayjs().hour(); i++) {
+        hours.push(i);
+      }
+      return hours;
+    },
+    getDisabledMinutes(selectedHour) {
+      var minutes = [];
+      if (selectedHour === dayjs().hour()) {
+        for (var i = 0; i < dayjs().minute() + 15; i++) {
+          minutes.push(i);
+        }
+      }
+      return minutes;
+    },
+    disabledDate(current) {
+      return current < dayjs().startOf("day");
+    },
+    disabledTime(h) {
+      return {
+        disabledHours: () => this.getDisabledHours(),
+        disabledMinutes: () => this.getDisabledMinutes(dayjs(h).hour()),
+      };
+    },
+    cout() {
+      console.log(this.arrive_at.toString());
+      const a = new Date("2022-11-20T13:00:00.000+00:00");
+      console.log(a.getHours());
+    },
     async convertCartToSendItem() {
       try {
         const order = this.getCart;
-        console.log(this.getCart);
+
         const content = {
-          arrive_at: "2022-11-06T04:25:38.628Z",
-          email: "febquanwork@gmail.com",
-          status: "onsite",
-          onSite: true,
+          arrive_at: this.arrive_at,
+          email: this.email,
+          status: this.isGuest ? "onSite" : "trusted",
+          onSite: this.onSite,
           order,
         };
         await this.$axios.post("/user/placeOrder", { ...content });
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    async submitSignUp() {
-      try {
-        this.isLoading = true;
-
-        await this.$axios.post(`user/signup`, {
-          name: this.name,
-          email: this.email,
-          password: this.password1,
-        });
-
-        this.isLoading = false;
-        this.$toast.success(`Đăng ký thành công !`, {
+        this.$toast.success(`Đặt hàng thành công !`, {
           position: "bottom",
           duration: 2000,
           queue: true,
           max: 0,
           pauseOnHover: false,
         });
-        setTimeout(() => {
-          this.$toast.show(`Hãy xác thực email của bạn`, {
-            position: "bottom",
-            duration: 2000,
-            enqueue: true,
-            max: 0,
-            pauseOnHover: false,
-          });
-        }, 2000);
+        this.$emit("closeOrderModal");
+        this.$store.dispatch("cart/resetCart");
       } catch (error) {
         this.isLoading = false;
         this.$toast.error(error.response.data.message, {
@@ -136,7 +175,12 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      dayjs: dayjs,
+      arrive_at: null,
+      onSite: false,
+      email: "",
+    };
   },
 };
 </script>
@@ -148,6 +192,13 @@ export default {
   align-items: center;
 
   width: 100%;
+}
+.noti-p {
+  text-align: center;
+}
+.check-box {
+  display: flex;
+  justify-content: center;
 }
 .extra-food,
 .main-food {
@@ -161,6 +212,12 @@ export default {
   width: 100%;
   max-height: 270px;
   overflow-y: auto;
+}
+.order-info {
+  width: 60%;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
 }
 .cost {
   text-align: right;

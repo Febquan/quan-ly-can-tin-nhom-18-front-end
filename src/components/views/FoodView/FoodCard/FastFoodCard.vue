@@ -1,5 +1,5 @@
 <template>
-  <a-card class="body-card" style="width: 200px; height: 150px">
+  <a-card class="body-card" style="width: 200px; height: 200px">
     <div class="fast-food-img-container">
       <img class="fast-food-img" alt="món ăn" :src="FastFood.imgUrl" />
     </div>
@@ -43,14 +43,14 @@ export default {
   display: grid;
 }
 .fast-food-img-container {
-  height: 50px;
+  height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .fast-food-img {
   height: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 1rem;
 }

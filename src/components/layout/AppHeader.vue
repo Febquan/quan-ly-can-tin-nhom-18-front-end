@@ -107,7 +107,7 @@ export default {
       this.$axios.defaults.headers.common["Authorization"] = "";
       this.$store.commit("toggleIsLogin");
       localStorage.clear("token");
-      this.$router.replace("/");
+      this.$router.replace({ name: "WelcomeView" });
     },
     toggleSignUp() {
       this.showSignUp = !this.showSignUp;

@@ -23,11 +23,11 @@ export default {
   methods: {
     toggleLogin() {
       this.$store.commit("toggleIsLogin");
-      this.$router.push({ name: "FoodView" });
+      this.$router.replace({ name: "FoodView" });
     },
     toggleGuest() {
       this.$store.commit("toggleIsGuest");
-      this.$router.push({ name: "FoodView" });
+      this.$router.replace({ name: "FoodView" });
     },
   },
 };

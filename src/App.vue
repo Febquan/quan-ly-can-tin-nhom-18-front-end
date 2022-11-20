@@ -18,7 +18,7 @@ export default {
     if (token) {
       this.$axios.defaults.headers.common["Authorization"] = token;
       this.$store.commit("toggleIsLogin");
-      this.$router.replace("/user/FoodView");
+      this.$router.replace({ name: "FoodView" });
     }
   },
 };

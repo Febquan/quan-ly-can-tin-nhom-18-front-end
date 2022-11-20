@@ -60,6 +60,9 @@ const cartModule = {
     delCart(state, productId) {
       state.cart.filters((product) => product._id === productId);
     },
+    resetCart(state) {
+      state.cart = [];
+    },
   },
   actions: {
     addCart(context, product) {
@@ -67,6 +70,9 @@ const cartModule = {
     },
     delCart(context, productId) {
       context.commit("delCart", productId);
+    },
+    resetCart(context) {
+      context.commit("resetCart");
     },
   },
   getters: {
