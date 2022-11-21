@@ -56,6 +56,7 @@ export default {
   },
   async created() {
     await this.fetchAllFood();
+    await this.$store.dispatch("orders/fetchOrders");
     this.isLoading = false;
   },
   methods: {

@@ -98,8 +98,7 @@ export default {
 }
 .hello1 {
   width: 100%;
-  max-height: 270px;
-  overflow-y: auto;
+
   padding: 20px;
 }
 .extra-food,

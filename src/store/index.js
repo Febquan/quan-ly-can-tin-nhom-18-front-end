@@ -87,8 +87,8 @@ const ordersModule = {
     getAllOrders(state) {
       return state.orders;
     },
-    getOrdersNumber(state) {
-      return state.orders.length;
+    getDoneOrdersNumber(state) {
+      return state.orders.filter((el) => el.status === "waiting").length;
     },
   },
 };

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import WelcomeView from "@/components/views/WelcomeView/WelcomeView.vue";
 import RestorePassword from "@/components/views/AuthView/RestorePassword.vue";
 import FoodView from "@/components/views/FoodView/FoodView.vue";
+import TrackMyOrderView from "@/components/views/OrderView/TrackMyOrderView.vue";
 import store from "@/store";
 const routes = [
   {
@@ -18,6 +19,12 @@ const routes = [
     path: "/user/FoodView",
     name: "FoodView",
     component: FoodView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/user/TrackMyOrder",
+    name: "TrackMyOrderView",
+    component: TrackMyOrderView,
     meta: { requiresAuth: true },
   },
   // {

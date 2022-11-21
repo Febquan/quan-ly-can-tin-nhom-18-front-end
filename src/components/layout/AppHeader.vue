@@ -16,8 +16,8 @@
             ></ShoppingCartOutlined>
           </a-badge>
         </a>
-        <a @click="toggleShowTrackMyOrderModal" v-if="isLogin || isGuest">
-          <a-badge :count="numberOfCardItem" title="Orders">
+        <a @click="ShowTrackMyOrder" v-if="isLogin && !isGuest">
+          <a-badge :count="getDoneOrdersNumber" title="Orders">
             <NotificationFilled
               style="font-size: 30px; color: var(--white)"
             ></NotificationFilled>
@@ -65,10 +65,6 @@
   ></SignUpModal>
   <OrderModalVue :visible="showOrderModal" @closeOrderModal="toggleOrderModal">
   </OrderModalVue>
-  <TrackMyOrderModal
-    :visible="showTrackMyOrderModal"
-    @closeTrackMyOrderModal="toggleShowTrackMyOrderModal"
-  ></TrackMyOrderModal>
 </template>
 
 <script>
@@ -81,7 +77,6 @@ import {
 import LoginModal from "@/components/views/AuthView/LoginModal.vue";
 import SignUpModal from "@/components/views/AuthView/SignUpModal.vue";
 import OrderModalVue from "../views/OrderView/OrderModal.vue";
-import TrackMyOrderModal from "../views/OrderView/TrackMyOrderModal.vue";
 
 export default {
   components: {
@@ -91,7 +86,7 @@ export default {
     SignUpModal,
     ShoppingCartOutlined,
     OrderModalVue,
-    TrackMyOrderModal,
+
     NotificationFilled,
   },
   data() {
@@ -112,6 +107,9 @@ export default {
     numberOfCardItem() {
       return this.$store.getters["cart/getCartNumber"];
     },
+    getDoneOrdersNumber() {
+      return this.$store.getters["orders/getDoneOrdersNumber"];
+    },
   },
   methods: {
     toggleOrderModal() {
@@ -120,8 +118,8 @@ export default {
     toggleLogin() {
       this.showLogin = !this.showLogin;
     },
-    toggleShowTrackMyOrderModal() {
-      this.showTrackMyOrderModal = !this.showTrackMyOrderModal;
+    ShowTrackMyOrder() {
+      this.$router.push({ name: "TrackMyOrderView" });
     },
     logout() {
       this.$axios.defaults.headers.common["Authorization"] = "";
