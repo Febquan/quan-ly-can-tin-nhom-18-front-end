@@ -12,7 +12,9 @@
         <a-button
           type="primary"
           @click="convertCartToSendItem"
-          :disabled="!hasAnyItem || !email || !arrive_at"
+          :disabled="
+            !hasAnyItem || (!email && isGuest) || (!arrive_at && !isGuest)
+          "
           v-if="!isLoading"
           >Đặt đơn</a-button
         >
@@ -46,8 +48,14 @@
                         {{ extraFood.object.price * extraFood.quantity }} VNĐ
                       </h4>
                     </div>
-
-                    <h2 class="cost">Cost: {{ item.cost }} VNĐ</h2>
+                    <div class="hello3">
+                      <a-button
+                        class="delete-order"
+                        @click="delOrder(item.object._id)"
+                        >Xóa</a-button
+                      >
+                      <h2 class="cost">Cost: {{ item.cost }} VNĐ</h2>
+                    </div>
                   </div>
                 </template>
               </a-list-item-meta>
@@ -73,10 +81,8 @@
         </p>
 
         <a-date-picker
-          v-if="!isGuest"
           format="HH:mm DD/MM/YYYY"
           v-model:value="arrive_at"
-          @change="cout"
           :disabled-date="disabledDate"
           :disabledTime="disabledTime"
           placeholder="Thời gian nhận hàng (bắt buộc)"
@@ -111,6 +117,9 @@ export default {
     },
   },
   methods: {
+    delOrder(id) {
+      this.$store.dispatch("cart/delCart", id);
+    },
     getDisabledHours() {
       var hours = [];
       for (var i = 0; i < dayjs().hour(); i++) {
@@ -121,7 +130,7 @@ export default {
     getDisabledMinutes(selectedHour) {
       var minutes = [];
       if (selectedHour === dayjs().hour()) {
-        for (var i = 0; i < dayjs().minute() + 15; i++) {
+        for (var i = 0; i < dayjs().minute(); i++) {
           minutes.push(i);
         }
       }
@@ -136,15 +145,11 @@ export default {
         disabledMinutes: () => this.getDisabledMinutes(dayjs(h).hour()),
       };
     },
-    cout() {
-      console.log(this.arrive_at.toString());
-      const a = new Date("2022-11-20T13:00:00.000+00:00");
-      console.log(a.getHours());
-    },
+
     async convertCartToSendItem() {
       try {
         const order = this.getCart;
-
+        console.log(this.arrive_at);
         const content = {
           arrive_at: this.arrive_at,
           email: this.email,
@@ -230,5 +235,13 @@ export default {
 .footer-container {
   display: flex;
   justify-content: center;
+}
+.delete-order {
+  scale: 0.8;
+}
+.hello3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

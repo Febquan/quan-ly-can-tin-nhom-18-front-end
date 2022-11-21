@@ -30,6 +30,11 @@ export default {
       this.$router.replace({ name: "FoodView" });
     },
   },
+  created() {
+    this.$store.commit("setLogin", false);
+    this.$store.commit("setGuest", false);
+    this.$store.dispatch("cart/resetCart");
+  },
 };
 </script>
 
@@ -42,6 +47,6 @@ export default {
   margin-top: 10vh;
   font-size: 1.2rem;
   user-select: none;
-  height: 84vh;
+  height: 77vh;
 }
 </style>

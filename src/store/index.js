@@ -45,6 +45,53 @@ const productsModule = {
     },
   },
 };
+const ordersModule = {
+  namespaced: true,
+  state() {
+    return {
+      orders: [],
+    };
+  },
+  mutations: {
+    setOrders(state, fetchOrder) {
+      console.log(fetchOrder, "helo");
+      state.orders = fetchOrder;
+    },
+  },
+  actions: {
+    async fetchOrders(context) {
+      try {
+        const res = await axios.get(
+          "/user/watchMyOrder",
+
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+
+        context.commit("setOrders", res.data.orders);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+  getters: {
+    getDoingOrders(state) {
+      return state.orders.filter((el) => el.status !== "waiting");
+    },
+    getDoneOrders(state) {
+      return state.orders.filter((el) => el.status === "waiting");
+    },
+    getAllOrders(state) {
+      return state.orders;
+    },
+    getOrdersNumber(state) {
+      return state.orders.length;
+    },
+  },
+};
 
 const cartModule = {
   namespaced: true,
@@ -58,7 +105,10 @@ const cartModule = {
       state.cart.push(product);
     },
     delCart(state, productId) {
-      state.cart.filters((product) => product._id === productId);
+      const index = state.cart.findIndex(
+        (product) => product.object._id == productId
+      );
+      state.cart.splice(index, 1);
     },
     resetCart(state) {
       state.cart = [];
@@ -89,6 +139,7 @@ export default createStore({
   modules: {
     prods: productsModule,
     cart: cartModule,
+    orders: ordersModule,
   },
   state: {
     isLogin: false,
@@ -108,6 +159,12 @@ export default createStore({
     },
     toggleIsGuest(state) {
       state.isGuest = !state.isGuest;
+    },
+    setLogin(state, truthy) {
+      state.isLogin = truthy;
+    },
+    setGuest(state, truthy) {
+      state.isGuest = truthy;
     },
   },
   actions: {},

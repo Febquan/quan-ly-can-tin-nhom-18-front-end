@@ -16,7 +16,7 @@ export default {
   created() {
     const token = localStorage.getItem("token");
     if (token) {
-      this.$axios.defaults.headers.common["Authorization"] = token;
+      this.$axios.defaults.headers.common["Authorization"] = "Bearer " + token;
       this.$store.commit("toggleIsLogin");
       this.$router.replace({ name: "FoodView" });
     }

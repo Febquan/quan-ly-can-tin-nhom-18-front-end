@@ -16,6 +16,13 @@
             ></ShoppingCartOutlined>
           </a-badge>
         </a>
+        <a @click="toggleShowTrackMyOrderModal" v-if="isLogin || isGuest">
+          <a-badge :count="numberOfCardItem" title="Orders">
+            <NotificationFilled
+              style="font-size: 30px; color: var(--white)"
+            ></NotificationFilled>
+          </a-badge>
+        </a>
         <a-button
           size="medium"
           @click="toggleLogin"
@@ -58,6 +65,10 @@
   ></SignUpModal>
   <OrderModalVue :visible="showOrderModal" @closeOrderModal="toggleOrderModal">
   </OrderModalVue>
+  <TrackMyOrderModal
+    :visible="showTrackMyOrderModal"
+    @closeTrackMyOrderModal="toggleShowTrackMyOrderModal"
+  ></TrackMyOrderModal>
 </template>
 
 <script>
@@ -65,10 +76,13 @@ import {
   UsergroupAddOutlined,
   ShoppingCartOutlined,
   LoginOutlined,
+  NotificationFilled,
 } from "@ant-design/icons-vue";
 import LoginModal from "@/components/views/AuthView/LoginModal.vue";
 import SignUpModal from "@/components/views/AuthView/SignUpModal.vue";
 import OrderModalVue from "../views/OrderView/OrderModal.vue";
+import TrackMyOrderModal from "../views/OrderView/TrackMyOrderModal.vue";
+
 export default {
   components: {
     LoginOutlined,
@@ -77,12 +91,15 @@ export default {
     SignUpModal,
     ShoppingCartOutlined,
     OrderModalVue,
+    TrackMyOrderModal,
+    NotificationFilled,
   },
   data() {
     return {
       showLogin: false,
       showSignUp: false,
       showOrderModal: false,
+      showTrackMyOrderModal: false,
     };
   },
   computed: {
@@ -102,6 +119,9 @@ export default {
     },
     toggleLogin() {
       this.showLogin = !this.showLogin;
+    },
+    toggleShowTrackMyOrderModal() {
+      this.showTrackMyOrderModal = !this.showTrackMyOrderModal;
     },
     logout() {
       this.$axios.defaults.headers.common["Authorization"] = "";

@@ -62,8 +62,10 @@ export default {
             password: this.password,
           }
         );
-        const token = res.token;
-        this.$axios.defaults.headers.common["Authorization"] = token;
+
+        const token = res.data.token;
+        this.$axios.defaults.headers.common["Authorization"] =
+          "Bearer " + token;
         localStorage.setItem("token", token);
         this.isLoading = false;
         this.$toast.success(`Đăng nhập thành công !`, {
@@ -126,6 +128,7 @@ export default {
   width: 70%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 .footer-container {
   display: flex;
