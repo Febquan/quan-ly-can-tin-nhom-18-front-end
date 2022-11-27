@@ -10,17 +10,17 @@
   <!-- <a-spin class="spinner" v-if="isLoading" /> -->
   <div class="modal-container" v-if="!isLoading">
     <div class="order-container left">
-      <h2 class="order-title">
+      <h1 class="order-title">
         <a-badge color="yellow" status="processing" />
         Đơn hàng đang làm
-      </h2>
+      </h1>
       <OrderItem :source="getDoingOrder"></OrderItem>
     </div>
     <div class="order-container">
-      <h2 class="order-title">
+      <h1 class="order-title">
         <a-badge color="#87d068" status="processing" />
         Đơn hàng đã xong
-      </h2>
+      </h1>
       <span>Xin vui lòng đến nhận tại quầy</span>
       <OrderItem class="is-done-order" :source="getDoneOrder"></OrderItem>
     </div>
@@ -77,6 +77,7 @@ export default {
   justify-items: center;
   align-content: center;
 }
+
 .order-container {
   width: 100%;
 }

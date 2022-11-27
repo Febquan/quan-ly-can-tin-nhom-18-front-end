@@ -1,7 +1,7 @@
 <template>
   <section>
     <div>
-      <router-link to="/">
+      <router-link to="/user/FoodView">
         <div class="logo-container">
           <img class="logo" src="@/assets/image/Logo.png" alt="logo" />
           <h1 class="logo-name">CĂN TIN 18</h1>
@@ -9,14 +9,14 @@
       </router-link>
 
       <div>
-        <a @click="toggleOrderModal" v-if="isLogin || isGuest">
+        <a @click="toggleOrderModal" v-if="(isLogin || isGuest) && !isAdmin">
           <a-badge :count="numberOfCardItem" title="Orders">
             <ShoppingCartOutlined
               style="font-size: 30px; color: var(--white)"
             ></ShoppingCartOutlined>
           </a-badge>
         </a>
-        <a @click="ShowTrackMyOrder" v-if="isLogin && !isGuest">
+        <a @click="ShowTrackMyOrder" v-if="isLogin && !isGuest && !isAdmin">
           <a-badge :count="getDoneOrdersNumber" title="Orders">
             <NotificationFilled
               style="font-size: 30px; color: var(--white)"
@@ -74,9 +74,9 @@ import {
   LoginOutlined,
   NotificationFilled,
 } from "@ant-design/icons-vue";
-import LoginModal from "@/components/views/AuthView/LoginModal.vue";
-import SignUpModal from "@/components/views/AuthView/SignUpModal.vue";
-import OrderModalVue from "../views/OrderView/OrderModal.vue";
+import LoginModal from "@/components/views/UserView/AuthView/LoginModal.vue";
+import SignUpModal from "@/components/views/UserView/AuthView/SignUpModal.vue";
+import OrderModalVue from "../views/UserView/OrderView/OrderModal.vue";
 
 export default {
   components: {
@@ -104,6 +104,9 @@ export default {
     isGuest() {
       return this.$store.getters.getGuestState;
     },
+    isAdmin() {
+      return this.$store.getters.getAdminState;
+    },
     numberOfCardItem() {
       return this.$store.getters["cart/getCartNumber"];
     },
@@ -124,6 +127,7 @@ export default {
     logout() {
       this.$axios.defaults.headers.common["Authorization"] = "";
       this.$store.commit("toggleIsLogin");
+      this.$store.commit("setAdmin", false);
       localStorage.clear("token");
       this.$router.replace({ name: "WelcomeView" });
     },

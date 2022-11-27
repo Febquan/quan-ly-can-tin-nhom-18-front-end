@@ -54,9 +54,31 @@ export default {
     FastFoodCardVue,
     AddFFADModal,
   },
+  mounted() {
+    this.$socket.on("OrderIsDone", (data) => {
+      const orderId = data.orderComplete;
+      if (
+        this.$store.getters["orders/getDoingOrders"].find(
+          (order) => order._id === orderId
+        )
+      ) {
+        this.$notification.success({
+          message: `Đơn hàng của bạn đã xong! `,
+          description: `Xin vui lòng đến nhận hàng tại quầy`,
+          placement: "bottomRight",
+          duration: null,
+        });
+        this.$store.commit("orders/setOrderStatus", {
+          orderId,
+          status: "waiting",
+        });
+      }
+    });
+  },
   async created() {
     await this.fetchAllFood();
     await this.$store.dispatch("orders/fetchOrders");
+
     this.isLoading = false;
   },
   methods: {

@@ -10,7 +10,11 @@
     <template #footer>
       <div class="footer-container">
         <a-spin class="spinner" v-if="isLoading" />
-        <a-button key="submit" type="primary" @click="addDishToCart"
+        <a-button
+          key="submit"
+          type="primary"
+          @click="addDishToCart"
+          :disabled="!quantity"
           >Thêm vào đơn hàng</a-button
         >
       </div>
@@ -24,6 +28,12 @@
           :color="dish.isAvailable ? 'green' : 'red'"
           >{{ dish.isAvailable ? "Còn hàng" : "Hết hàng" }}</a-tag
         >
+        <a-input-number
+          v-model:value="quantity"
+          :min="1"
+          :max="100"
+          placeholder="Số lượng"
+        />
         <h4 class="dish-info-specific">
           {{ dish.info }}
         </h4>
@@ -79,7 +89,7 @@ export default {
     },
     calCost() {
       return (
-        this.dish.price +
+        this.dish.price * this.quantity +
         this.extraFood.reduce(
           (sum, el) => sum + el.object.price * el.quantity,
           0
@@ -96,6 +106,7 @@ export default {
       description: "",
       extraFood: [],
       isLoading: false,
+      quantity: "",
     };
   },
   methods: {
@@ -122,6 +133,7 @@ export default {
       this.$emit("closeAddDishModel");
       this.description = "";
       this.extraFood = [];
+      this.quantity = "";
     },
     addExtraFood(extraFood) {
       if (!extraFood.isAvailable) {
@@ -153,7 +165,7 @@ export default {
           // },
           description: this.description,
           extraFood: this.extraFood,
-          quantity: 1,
+          quantity: this.quantity,
           cost: this.calCost,
         });
 

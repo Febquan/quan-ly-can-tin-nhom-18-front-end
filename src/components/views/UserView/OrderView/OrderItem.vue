@@ -2,7 +2,7 @@
   <div class="hello1">
     <a-list class="hello2" item-layout="horizontal" :data-source="source">
       <template #renderItem="{ item }">
-        <a-list-item>
+        <a-list-item class="item-list">
           <a-list-item-meta>
             <template #title>
               <div class="order-list">
@@ -26,7 +26,7 @@
                     <h3>
                       {{ i.object.name + ` (${i.quantity})` }}
                     </h3>
-                    <h3>{{ i.object.price }} VNĐ</h3>
+                    <h3>{{ i.object.price * i.quantity }} VNĐ</h3>
                   </div>
 
                   <div
@@ -47,6 +47,16 @@
                   <h2>Thành tiền:</h2>
                   <h2 class="cost-text">{{ item.cost }} VNĐ</h2>
                 </div>
+                <div class="order-del">
+                  <!-- <h2>hello</h2>
+                  <h2 class="cost-text">{{ item.status }} </h2> -->
+                  <a-button
+                    v-if="item.status == 'trusted' || item.status == 'onSite'"
+                    @click="delOrder(item._id)"
+                  >
+                    Hủy đơn đặt hàng
+                  </a-button>
+                </div>
               </div>
             </template>
           </a-list-item-meta>
@@ -62,7 +72,31 @@ export default {
   props: {
     source: Array,
   },
+
   methods: {
+    async delOrder(id) {
+      try {
+        await this.$axios.put(`/user/deleteOrder`, {
+          orderId: id,
+        });
+        this.$toast.success(`Xóa order thành công !`, {
+          position: "bottom",
+          duration: 2000,
+          queue: true,
+          max: 0,
+          pauseOnHover: false,
+        });
+        this.$store.commit("orders/deleteOrder", id);
+      } catch (error) {
+        this.$toast.error(error.response.data.message, {
+          position: "bottom",
+          duration: 1500,
+          enqueue: true,
+          max: 0,
+          pauseOnHover: false,
+        });
+      }
+    },
     getTimeString(string) {
       return this.dayjs(string).format("HH:mm DD/MM/YYYY").toString();
     },
@@ -119,6 +153,9 @@ export default {
 .order-list {
   display: grid;
   grid-template-columns: 1fr 2fr;
+  padding: 20px;
+  border: 3px solid var(--grey);
+  border-radius: 20px;
 }
 .order-cost {
   grid-column: 1 / span 2;
@@ -130,6 +167,14 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  justify-content: center;
+  align-items: center;
+  grid-row: 1 / -3;
+  align-self: center;
+}
+.order-del {
+  grid-column: 1 / -1;
+  display: flex;
   justify-content: center;
   align-items: center;
 }

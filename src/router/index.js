@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import WelcomeView from "@/components/views/WelcomeView/WelcomeView.vue";
-import RestorePassword from "@/components/views/AuthView/RestorePassword.vue";
-import FoodView from "@/components/views/FoodView/FoodView.vue";
-import TrackMyOrderView from "@/components/views/OrderView/TrackMyOrderView.vue";
+import RestorePassword from "@/components/views/UserView/AuthView/RestorePassword.vue";
+import FoodView from "@/components/views/UserView/FoodView/FoodView.vue";
+import TrackMyOrderView from "@/components/views/UserView/OrderView/TrackMyOrderView.vue";
+import AdminMainView from "@/components/views/AdminView/AdminMainView.vue";
+import OrderManagement from "@/components/views/AdminView/orderManagement/OrderManagement.vue";
 import store from "@/store";
 const routes = [
   {
@@ -26,6 +28,19 @@ const routes = [
     name: "TrackMyOrderView",
     component: TrackMyOrderView,
     meta: { requiresAuth: true },
+  },
+  {
+    path: "/admin",
+    name: "AdminMainView",
+    component: AdminMainView,
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: "orderManagement",
+        name: "OrderManagement",
+        component: OrderManagement,
+      },
+    ],
   },
   // {
   //   path: "/about",

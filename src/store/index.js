@@ -54,8 +54,21 @@ const ordersModule = {
   },
   mutations: {
     setOrders(state, fetchOrder) {
-      console.log(fetchOrder, "helo");
       state.orders = fetchOrder;
+    },
+    setOrderStatus(state, payload) {
+      const id = payload.orderId;
+      const status = payload.status;
+      const index = state.orders.findIndex((order) => order._id === id);
+      state.orders[index].status = status;
+      // console.log(id, status);
+      // state.orders = [...state.orders];
+      // console.log(state.orders, "supp");
+    },
+    deleteOrder(state, id) {
+      const index = state.orders.findIndex((order) => order._id == id);
+      state.orders.splice(index, 1);
+      console.log(state.orders);
     },
   },
   actions: {
@@ -144,6 +157,7 @@ export default createStore({
   state: {
     isLogin: false,
     isGuest: false,
+    isAdmin: false,
   },
   getters: {
     getLoginState(state) {
@@ -151,6 +165,9 @@ export default createStore({
     },
     getGuestState(state) {
       return state.isGuest;
+    },
+    getAdminState(state) {
+      return state.isAdmin;
     },
   },
   mutations: {
@@ -165,6 +182,9 @@ export default createStore({
     },
     setGuest(state, truthy) {
       state.isGuest = truthy;
+    },
+    setAdmin(state, truthy) {
+      state.isAdmin = truthy;
     },
   },
   actions: {},

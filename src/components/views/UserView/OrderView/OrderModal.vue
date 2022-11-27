@@ -30,9 +30,13 @@
                   <div class="order-list">
                     <div class="main-food">
                       <h3>
-                        {{ item.object.name + ` (${item.quantity})` }}
+                        {{
+                          item.object.name +
+                          ` (${item.object.price} x ${item.quantity})`
+                        }}
                       </h3>
-                      <h3>{{ item.object.price }} VNĐ</h3>
+
+                      <h3>{{ item.object.price * item.quantity }} VNĐ</h3>
                     </div>
                     <div
                       class="extra-food"
@@ -41,7 +45,8 @@
                     >
                       <h4>
                         +{{
-                          extraFood.object.name + ` (${extraFood.quantity})`
+                          extraFood.object.name +
+                          ` (${extraFood.object.price} x ${extraFood.quantity})`
                         }}
                       </h4>
                       <h4>
@@ -86,7 +91,7 @@
           :disabled-date="disabledDate"
           :disabledTime="disabledTime"
           placeholder="Thời gian nhận hàng (bắt buộc)"
-          :show-time="{ defaultValue: dayjs('00:00:00', 'HH:mm') }"
+          :show-time="{ defaultValue: dayjs() }"
         />
         <a-checkbox class="check-box" v-model:checked="onSite"
           >Ăn tại căn tin ?</a-checkbox
@@ -120,11 +125,18 @@ export default {
     delOrder(id) {
       this.$store.dispatch("cart/delCart", id);
     },
-    getDisabledHours() {
+    getDisabledHours(date, month, year) {
       var hours = [];
-      for (var i = 0; i < dayjs().hour(); i++) {
-        hours.push(i);
-      }
+      const thisDate = dayjs();
+      if (
+        thisDate.date() === date &&
+        thisDate.month() === month &&
+        thisDate.year() === year
+      )
+        for (var i = 0; i < dayjs().hour(); i++) {
+          hours.push(i);
+        }
+
       return hours;
     },
     getDisabledMinutes(selectedHour) {
@@ -140,16 +152,18 @@ export default {
       return current < dayjs().startOf("day");
     },
     disabledTime(h) {
+      console.log("ssds");
+      const moment = dayjs(h);
       return {
-        disabledHours: () => this.getDisabledHours(),
-        disabledMinutes: () => this.getDisabledMinutes(dayjs(h).hour()),
+        disabledHours: () =>
+          this.getDisabledHours(moment.date(), moment.month(), moment.year()),
+        disabledMinutes: () => this.getDisabledMinutes(moment.hour()),
       };
     },
 
     async convertCartToSendItem() {
       try {
         const order = this.getCart;
-        console.log(this.arrive_at);
         const content = {
           arrive_at: this.arrive_at,
           email: this.email,

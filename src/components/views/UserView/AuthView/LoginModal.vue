@@ -22,7 +22,7 @@
       <a-input v-model:value="email" placeholder="Email" />
       <a-input-password v-model:value="password" placeholder="Password" />
       <div class="link-container">
-        <a-checkbox v-model:checked="checked">Tài khoản admin</a-checkbox>
+        <a-checkbox v-model:checked="isAdmin">Tài khoản admin</a-checkbox>
         <a-button type="link" @click="toggleResPas"
           >Bạn quên mật khẩu ?</a-button
         >
@@ -37,6 +37,10 @@
 
 <script>
 // import { io } from "socket.io-client";
+// const socket = io("http://localhost:8081");
+// socket.on("connection", () => {
+//   console.log("helo");
+// });
 import sendEmailRestorePasswordModal from "./sendEmailRestorePassword.vue";
 export default {
   name: "LoginModal",
@@ -56,7 +60,7 @@ export default {
         this.isLoading = true;
 
         const res = await this.$axios.post(
-          `/${this.checked ? "admin" : "user"}/login`,
+          `/${this.isAdmin ? "admin" : "user"}/login`,
           {
             email: this.email,
             password: this.password,
@@ -75,14 +79,20 @@ export default {
           max: 0,
           pauseOnHover: false,
         });
-        // const socket = io("http://localhost:8081");
-        // socket.on("connection", () => {
-        //   console.log("helo");
-        // });
+
         this.$emit("closeLoginModal");
 
         this.$store.commit("toggleIsLogin");
-        this.$router.push({ name: "FoodView" });
+        if (!this.isAdmin) {
+          this.$router.replace({ name: "FoodView" });
+        }
+        if (this.isAdmin) {
+          this.$store.commit("setAdmin", true);
+          this.$router.replace({ name: "AdminMainView" });
+          localStorage.setItem("admin", true);
+          console.log(this.$socket.id);
+          this.$socket.emit("adminConnect", this.$socket.id);
+        }
       } catch (error) {
         this.isLoading = false;
         this.$toast.error(error.response.data.message, {
@@ -100,7 +110,7 @@ export default {
       email: "",
       password: "",
       openResPas: false,
-      checked: false,
+      isAdmin: false,
       isLoading: false,
     };
   },
