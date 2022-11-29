@@ -7,6 +7,7 @@ import TrackMyOrderViewAuth from "@/components/views/UserView/OrderView/TrackMyO
 import AdminMainView from "@/components/views/AdminView/AdminMainView.vue";
 import OrderManagement from "@/components/views/AdminView/orderManagement/OrderManagement.vue";
 import OrderPayment from "@/components/views/AdminView/orderManagement/OrderPayment.vue";
+import OrderManipulate from "@/components/views/AdminView/orderManagement/OrderManipulate.vue";
 import store from "@/store";
 const routes = [
   {
@@ -51,6 +52,11 @@ const routes = [
         path: "orderPayment",
         name: "OrderPayment",
         component: OrderPayment,
+      },
+      {
+        path: "orderManipulate",
+        name: "OrderManipulate",
+        component: OrderManipulate,
       },
     ],
   },

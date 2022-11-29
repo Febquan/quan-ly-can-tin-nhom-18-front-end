@@ -8,7 +8,7 @@
     </div>
     <div class="dish-info">
       <h4 class="dish-price">
-        <span>Giá:</span> {{ +this.dish.price + " VNĐ" }}
+        <span>Giá:</span> {{ this.convertVND(this.dish.price) }}
       </h4>
       <a-tag class="dish-status" :color="dish.isAvailable ? 'green' : 'red'">{{
         dish.isAvailable ? "Còn hàng" : "Hết hàng"
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import convertVND from "@/util/moneyformat";
 export default {
   props: {
     dish: Object,
@@ -37,9 +38,7 @@ export default {
   },
   data() {
     return {
-      alo: {
-        color: "red",
-      },
+      convertVND: convertVND,
     };
   },
 };

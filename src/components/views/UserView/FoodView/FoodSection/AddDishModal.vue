@@ -22,7 +22,9 @@
     <div class="modal-container">
       <div class="dish-info-all">
         <h1 class="dish-name">{{ this.dish.name }}</h1>
-        <h2 class="dish-price">{{ "Giá: " + this.dish.price + "VNĐ" }}</h2>
+        <h2 class="dish-price">
+          {{ "Giá: " + this.convertVND(this.dish.price) }}
+        </h2>
         <a-tag
           class="dish-status"
           :color="dish.isAvailable ? 'green' : 'red'"
@@ -73,6 +75,7 @@
 import ExtraFoodCardVue from "../FoodCard/ExtraFoodCard.vue";
 import { mapGetters } from "vuex";
 import { MinusCircleFilled } from "@ant-design/icons-vue";
+import convertVND from "@/util/moneyformat";
 export default {
   name: "AddDishModel",
 
@@ -107,6 +110,7 @@ export default {
       extraFood: [],
       isLoading: false,
       quantity: "",
+      convertVND: convertVND,
     };
   },
   methods: {

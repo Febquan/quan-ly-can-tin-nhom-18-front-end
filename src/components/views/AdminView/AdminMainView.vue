@@ -16,15 +16,18 @@
             </span>
           </template>
           <a-menu-item key="1" @click="print">
-            <pie-chart-outlined />
             <router-link :to="{ name: 'OrderManagement' }"
               >Thực hiện đơn hàng</router-link
             >
           </a-menu-item>
           <a-menu-item key="2" @click="print">
-            <pie-chart-outlined />
             <router-link :to="{ name: 'OrderPayment' }"
               >Thanh toán
+            </router-link>
+          </a-menu-item>
+          <a-menu-item key="3" @click="print">
+            <router-link :to="{ name: 'OrderManipulate' }"
+              >Sửa đơn hàng
             </router-link>
           </a-menu-item>
         </a-sub-menu>

@@ -21,7 +21,9 @@
     <div class="modal-container">
       <div class="FFAD-info-all">
         <h1 class="FFAD-name">{{ this.FFAD.name }}</h1>
-        <h2 class="FFAD-price">{{ "Giá: " + this.FFAD.price + "VNĐ" }}</h2>
+        <h2 class="FFAD-price">
+          {{ "Giá: " + this.convertVND(this.FFAD.price) }}
+        </h2>
         <a-tag class="FFAD-status" :color="isAvailable ? 'green' : 'red'">{{
           isAvailable ? `Còn ${FFAD.amountAvailable} sản phẩm` : "Hết hàng"
         }}</a-tag>
@@ -39,6 +41,7 @@
 </template>
 
 <script>
+import convertVND from "@/util/moneyformat";
 export default {
   name: "AddFFADModel",
 
@@ -59,6 +62,7 @@ export default {
     return {
       amount: 1,
       isLoading: false,
+      convertVND: convertVND,
     };
   },
   methods: {

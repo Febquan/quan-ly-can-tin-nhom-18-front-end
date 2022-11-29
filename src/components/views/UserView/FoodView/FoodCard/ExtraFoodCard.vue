@@ -8,7 +8,7 @@
     </div>
     <div class="extraFood-info">
       <h4 class="extraFood-price">
-        <span>Giá:</span> {{ +this.extraFood.price + " VNĐ" }}
+        <span>Giá:</span> {{ this.convertVND(this.extraFood.price) }}
       </h4>
       <a-tag
         class="extraFood-status"
@@ -25,6 +25,7 @@
 
 <script>
 import { PlusCircleFilled } from "@ant-design/icons-vue";
+import convertVND from "@/util/moneyformat";
 export default {
   props: {
     extraFood: Object,
@@ -38,7 +39,9 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      convertVND: convertVND,
+    };
   },
 };
 </script>

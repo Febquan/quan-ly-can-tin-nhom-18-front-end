@@ -8,7 +8,7 @@
     </div>
     <div class="fast-food-info">
       <h4 class="fast-food-price">
-        <span>Giá:</span> {{ +this.FastFood.price + " VNĐ" }}
+        <span>Giá:</span> {{ this.convertVND(this.FastFood.price) }}
       </h4>
       <a-tag class="fast-food-status" :color="isAvailable ? 'green' : 'red'">{{
         isAvailable ? "Còn hàng" : "Hết hàng"
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import convertVND from "@/util/moneyformat";
 export default {
   props: {
     FastFood: Object,
@@ -34,7 +35,9 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      convertVND: convertVND,
+    };
   },
 };
 </script>

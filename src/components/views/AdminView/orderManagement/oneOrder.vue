@@ -34,7 +34,7 @@
         <h3>
           {{ i.object.name + ` (${i.quantity})` }}
         </h3>
-        <h3>{{ i.object.price * i.quantity }} VNĐ</h3>
+        <h3>{{ this.convertVND(i.object.price * i.quantity) }}</h3>
       </div>
 
       <div
@@ -46,7 +46,9 @@
           +
           {{ extraFood.object.name + ` (${extraFood.quantity})` }}
         </h4>
-        <h4>{{ extraFood.object.price * extraFood.quantity }} VNĐ</h4>
+        <h4>
+          {{ this.convertVND(extraFood.object.price * extraFood.quantity) }}
+        </h4>
       </div>
       <h4 class="description" v-if="i.description">
         Lưu ý: <span>{{ i.description }}</span>
@@ -54,21 +56,43 @@
     </div>
     <div class="order-cost">
       <h2>Thành tiền:</h2>
-      <h2 class="cost-text">{{ this.item.cost }} VNĐ</h2>
+      <h2 class="cost-text">{{ this.convertVND(this.item.cost) }}</h2>
+    </div>
+    <div class="button-container">
+      <a-button
+        class="pay-button"
+        v-if="isPayment"
+        :disabled="item.status == 'paid'"
+        type="primary"
+        @click="
+          $emit('openPaymentModal', {
+            cost: this.item.cost,
+            orderId: this.item._id,
+          })
+        "
+        >Thanh toán</a-button
+      >
     </div>
   </div>
 </template>
 
 <script>
 import dayjs from "dayjs";
+import convertVND from "@/util/moneyformat";
+
 export default {
   props: {
     item: Object,
+    isPayment: Boolean,
   },
   created() {
     console.log(this.item);
   },
   methods: {
+    // setOrderPayed()
+    // {
+
+    // }
     async copy(orderId) {
       await navigator.clipboard.writeText(orderId);
       this.$toast.success(`Copied`, {
@@ -89,6 +113,9 @@ export default {
       if (string === "waiting") {
         return "Đã làm xong";
       }
+      if (string === "paid") {
+        return "Đã thanh toán";
+      }
       return "Trong hàng đợi";
     },
     getStatusColor(string) {
@@ -98,6 +125,9 @@ export default {
       if (string === "waiting") {
         return "green";
       }
+      if (string === "paid") {
+        return "purple";
+      }
       return "gold";
     },
   },
@@ -105,6 +135,7 @@ export default {
   data() {
     return {
       dayjs: dayjs,
+      convertVND: convertVND,
     };
   },
 };
@@ -151,5 +182,15 @@ export default {
 }
 .description {
   text-align: left;
+}
+.button-container {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-column: 1/-1;
+}
+.pay-button {
+  width: 98%;
 }
 </style>

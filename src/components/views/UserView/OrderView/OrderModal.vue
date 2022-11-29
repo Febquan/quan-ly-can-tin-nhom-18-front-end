@@ -36,7 +36,9 @@
                         }}
                       </h3>
 
-                      <h3>{{ item.object.price * item.quantity }} VNĐ</h3>
+                      <h3>
+                        {{ this.convertVND(item.object.price * item.quantity) }}
+                      </h3>
                     </div>
                     <div
                       class="extra-food"
@@ -50,7 +52,11 @@
                         }}
                       </h4>
                       <h4>
-                        {{ extraFood.object.price * extraFood.quantity }} VNĐ
+                        {{
+                          this.convertVND(
+                            extraFood.object.price * extraFood.quantity
+                          )
+                        }}
                       </h4>
                     </div>
                     <div class="hello3">
@@ -59,7 +65,9 @@
                         @click="delOrder(item.object._id)"
                         >Xóa</a-button
                       >
-                      <h2 class="cost">Cost: {{ item.cost }} VNĐ</h2>
+                      <h2 class="cost">
+                        Cost: {{ this.convertVND(item.cost) }}
+                      </h2>
                     </div>
                   </div>
                 </template>
@@ -104,6 +112,7 @@
 <script>
 import { mapGetters } from "vuex";
 import dayjs from "dayjs";
+import convertVND from "@/util/moneyformat";
 export default {
   name: "OrderModal",
   props: {
@@ -199,6 +208,7 @@ export default {
       arrive_at: null,
       onSite: false,
       email: "",
+      convertVND: convertVND,
     };
   },
 };

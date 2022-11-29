@@ -31,7 +31,7 @@
                     <h3>
                       {{ i.object.name + ` (${i.quantity})` }}
                     </h3>
-                    <h3>{{ i.object.price * i.quantity }} VNĐ</h3>
+                    <h3>{{ this.convertVND(i.object.price * i.quantity) }}</h3>
                   </div>
 
                   <div
@@ -44,13 +44,17 @@
                       {{ extraFood.object.name + ` (${extraFood.quantity})` }}
                     </h4>
                     <h4>
-                      {{ extraFood.object.price * extraFood.quantity }} VNĐ
+                      {{
+                        this.convertVND(
+                          extraFood.object.price * extraFood.quantity
+                        )
+                      }}
                     </h4>
                   </div>
                 </div>
                 <div class="order-cost">
                   <h2>Thành tiền:</h2>
-                  <h2 class="cost-text">{{ item.cost }} VNĐ</h2>
+                  <h2 class="cost-text">{{ this.convertVND(item.cost) }}</h2>
                 </div>
                 <div class="order-del">
                   <!-- <h2>hello</h2>
@@ -72,6 +76,7 @@
 </template>
 <script>
 import dayjs from "dayjs";
+import convertVND from "@/util/moneyformat";
 export default {
   name: "OrderItem",
   props: {
@@ -127,6 +132,7 @@ export default {
   data() {
     return {
       dayjs: dayjs,
+      convertVND: convertVND,
     };
   },
 };
