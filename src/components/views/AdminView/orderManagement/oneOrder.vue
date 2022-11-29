@@ -7,14 +7,15 @@
       <a-tag>
         {{ this.getTimeString(this.item.arrive_at) }}
       </a-tag>
-      <a-tag>
+      <!-- <a-tag>
         {{ this.getTimeString(this.item.created_at) }}
-      </a-tag>
+      </a-tag> -->
       <a-tag :color="getStatusColor(item.status)">
         {{ this.getStatus(item.status) }}
       </a-tag>
     </div>
     <div class="client-info">
+      <a-tag color="green" @click="copy(item._id)">{{ this.item._id }} </a-tag>
       <div class="client" v-if="item.user">
         <h3>
           {{ this.item.user.name }}
@@ -28,6 +29,7 @@
       </div>
     </div>
     <div v-for="i in this.item.order" :key="i.created_at" class="food-info">
+      <a-divider />
       <div class="main-food">
         <h3>
           {{ i.object.name + ` (${i.quantity})` }}
@@ -46,6 +48,9 @@
         </h4>
         <h4>{{ extraFood.object.price * extraFood.quantity }} VNĐ</h4>
       </div>
+      <h4 class="description" v-if="i.description">
+        Lưu ý: <span>{{ i.description }}</span>
+      </h4>
     </div>
     <div class="order-cost">
       <h2>Thành tiền:</h2>
@@ -60,7 +65,20 @@ export default {
   props: {
     item: Object,
   },
+  created() {
+    console.log(this.item);
+  },
   methods: {
+    async copy(orderId) {
+      await navigator.clipboard.writeText(orderId);
+      this.$toast.success(`Copied`, {
+        position: "bottom",
+        duration: 800,
+        queue: true,
+        max: 0,
+        pauseOnHover: false,
+      });
+    },
     getTimeString(string) {
       return this.dayjs(string).format("HH:mm DD/MM/YYYY").toString();
     },
@@ -130,5 +148,8 @@ export default {
   align-items: center;
   grid-row: 1 / -3;
   align-self: center;
+}
+.description {
+  text-align: left;
 }
 </style>

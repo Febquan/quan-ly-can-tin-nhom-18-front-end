@@ -16,6 +16,11 @@
                   <a-tag :color="getStatusColor(item.status)">
                     {{ this.getStatus(item.status) }}
                   </a-tag>
+                  <a-button
+                    type="primary"
+                    @click="$emit('openQrModal', item._id)"
+                    >QR CODE</a-button
+                  >
                 </div>
                 <div
                   v-for="i in item.order"

@@ -7,19 +7,32 @@
         theme="light"
         class="menu"
         mode="inline"
-        @click="print"
       >
-        <a-menu-item key="1" @click="print">
-          <pie-chart-outlined />
-          <router-link :to="{ name: 'OrderManagement' }"
-            >Quản lý đơn hàng</router-link
-          >
-        </a-menu-item>
-        <a-menu-item key="2">
+        <a-sub-menu key="sub1">
+          <template #title>
+            <span>
+              <BookFilled />
+              <span>Quản lý đơn hàng</span>
+            </span>
+          </template>
+          <a-menu-item key="1" @click="print">
+            <pie-chart-outlined />
+            <router-link :to="{ name: 'OrderManagement' }"
+              >Thực hiện đơn hàng</router-link
+            >
+          </a-menu-item>
+          <a-menu-item key="2" @click="print">
+            <pie-chart-outlined />
+            <router-link :to="{ name: 'OrderPayment' }"
+              >Thanh toán
+            </router-link>
+          </a-menu-item>
+        </a-sub-menu>
+        <!-- <a-menu-item key="2">
           <desktop-outlined />
           <span>Quản lý sản phẩm</span>
-        </a-menu-item>
-        <a-sub-menu key="sub1">
+        </a-menu-item> -->
+        <!-- <a-sub-menu key="sub1">
           <template #title>
             <span>
               <user-outlined />
@@ -29,7 +42,7 @@
           <a-menu-item key="3">Tom</a-menu-item>
           <a-menu-item key="4">Bill</a-menu-item>
           <a-menu-item key="5">Alex</a-menu-item>
-        </a-sub-menu>
+        </a-sub-menu> -->
         <a-sub-menu key="sub2">
           <template #title>
             <span>
@@ -55,8 +68,12 @@
 </template>
 
 <script>
+import { BookFilled } from "@ant-design/icons-vue";
 export default {
   name: "AdminMainView",
+  components: {
+    BookFilled,
+  },
   data() {
     return {
       collapsed: false,
@@ -64,9 +81,9 @@ export default {
     };
   },
   methods: {
-    print() {
-      this.$router.push({ name: "OrderManagement" });
-    },
+    // print() {
+    //   this.$router.push({ name: "OrderManagement" });
+    // },
   },
 };
 </script>

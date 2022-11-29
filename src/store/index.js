@@ -72,17 +72,23 @@ const ordersModule = {
     },
   },
   actions: {
-    async fetchOrders(context) {
+    async fetchOrders(context, { noAuth, email }) {
       try {
-        const res = await axios.get(
-          "/user/watchMyOrder",
+        let res = null;
+        if (!noAuth) {
+          res = await axios.get(
+            "/user/watchMyOrder",
 
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          }
-        );
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("token"),
+              },
+            }
+          );
+        }
+        if (noAuth) {
+          res = await axios.get(`/user/watchMyOrder/${email}`);
+        }
 
         context.commit("setOrders", res.data.orders);
       } catch (error) {

@@ -41,7 +41,7 @@
 import OrderItem from "./OrderItem.vue";
 import QrcodeVue from "qrcode.vue";
 export default {
-  name: "TrackMyOrderModal",
+  name: "TrackMyOrderAuth",
 
   components: {
     OrderItem,
@@ -53,14 +53,9 @@ export default {
       Qrcode: "",
     };
   },
-  async mounted() {
-    if (this.$route.params.email) {
-      await this.$store.dispatch("orders/fetchOrders", {
-        noAuth: true,
-        email: this.$route.params.email,
-      });
-    }
-  },
+  // async mounted() {
+  //   await this.$store.dispatch("orders/fetchOrders", {});
+  // },
   computed: {
     getDoneOrder() {
       return this.$store.getters["orders/getDoneOrders"];

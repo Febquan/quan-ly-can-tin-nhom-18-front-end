@@ -3,8 +3,10 @@ import WelcomeView from "@/components/views/WelcomeView/WelcomeView.vue";
 import RestorePassword from "@/components/views/UserView/AuthView/RestorePassword.vue";
 import FoodView from "@/components/views/UserView/FoodView/FoodView.vue";
 import TrackMyOrderView from "@/components/views/UserView/OrderView/TrackMyOrderView.vue";
+import TrackMyOrderViewAuth from "@/components/views/UserView/OrderView/TrackMyOrderViewAuth.vue";
 import AdminMainView from "@/components/views/AdminView/AdminMainView.vue";
 import OrderManagement from "@/components/views/AdminView/orderManagement/OrderManagement.vue";
+import OrderPayment from "@/components/views/AdminView/orderManagement/OrderPayment.vue";
 import store from "@/store";
 const routes = [
   {
@@ -25,9 +27,14 @@ const routes = [
   },
   {
     path: "/user/TrackMyOrder",
+    name: "TrackMyOrderViewAuth",
+    component: TrackMyOrderViewAuth,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/user/TrackMyOrder/:email",
     name: "TrackMyOrderView",
     component: TrackMyOrderView,
-    meta: { requiresAuth: true },
   },
   {
     path: "/admin",
@@ -39,6 +46,11 @@ const routes = [
         path: "orderManagement",
         name: "OrderManagement",
         component: OrderManagement,
+      },
+      {
+        path: "orderPayment",
+        name: "OrderPayment",
+        component: OrderPayment,
       },
     ],
   },

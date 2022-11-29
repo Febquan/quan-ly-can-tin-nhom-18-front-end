@@ -1,41 +1,57 @@
 <template>
   <div class="container">
-    <draggable
-      class="orders-container"
-      v-model="reactiveWaitingOrders"
-      :sort="false"
-      ghost-class="ghost"
-      handle-class="handle"
-      group="orders"
-      item-key="id"
-      @add="sortWaitingOrders"
-    >
-      <template #item="{ element }">
-        <oneOrderVue :item="element" :key="element._id"></oneOrderVue>
-      </template>
-    </draggable>
-    <draggable
-      class="orders-container"
-      v-model="doingOrders"
-      ghost-class="ghost"
-      group="orders"
-      item-key="id"
-    >
-      <template #item="{ element }">
-        <oneOrderVue :item="element" :key="element._id"></oneOrderVue>
-      </template>
-    </draggable>
-    <draggable
-      class="orders-container"
-      v-model="doneOrders"
-      ghost-class="ghost"
-      group="orders"
-      item-key="id"
-    >
-      <template #item="{ element }">
-        <oneOrderVue :item="element" :key="element._id"></oneOrderVue>
-      </template>
-    </draggable>
+    <div>
+      <h1 class="container-title">Đơn hàng trong hàng đợi</h1>
+      <draggable
+        class="orders-container"
+        v-model="reactiveWaitingOrders"
+        :sort="false"
+        ghost-class="ghost"
+        group="waiting-orders"
+        @add="sortWaitingOrders"
+        @remove="trigger"
+      >
+        <template #item="{ element }">
+          <oneOrderVue :item="element" :key="element._id"></oneOrderVue>
+        </template>
+      </draggable>
+    </div>
+    <div>
+      <h1 class="container-title">Đơn hàng đang làm</h1>
+      <draggable
+        class="orders-container"
+        v-model="doingOrders"
+        ghost-class="ghost"
+        :sort="false"
+        :group="{
+          name: 'doing-orders',
+          put: ['waiting-orders'],
+        }"
+        @change="setDoingOrder"
+      >
+        <template #item="{ element }">
+          <oneOrderVue :item="element" :key="element._id"></oneOrderVue>
+        </template>
+      </draggable>
+    </div>
+    <div>
+      <h1 class="container-title">Đơn hàng đã làm xong</h1>
+      <draggable
+        class="orders-container"
+        v-model="doneOrders"
+        ghost-class="ghost"
+        :group="{
+          name: 'done-orders',
+          put: ['waiting-orders', 'doing-orders'],
+        }"
+        :sort="false"
+        @change="setDoneOrder"
+      >
+        <template #item="{ element }">
+          <oneOrderVue :item="element" :key="element._id"></oneOrderVue>
+        </template>
+      </draggable>
+    </div>
   </div>
 </template>
 
@@ -50,17 +66,23 @@ export default {
     oneOrderVue,
   },
   computed: {
-    reactiveWaitingOrders() {
-      return this.waitingOrders;
+    reactiveWaitingOrders: {
+      get() {
+        return this.waitingOrders;
+      },
+      set(newValue) {
+        this.waitingOrders = newValue;
+      },
     },
   },
   data() {
     return {
+      // limit: 2,
       collapsed: false,
-      selectedKeys: "",
-      waitingOrders: null,
-      doingOrders: null,
-      doneOrders: null,
+      waitingOrders: [],
+      doingOrders: [],
+      doneOrders: [],
+      // cutWaitingOrders: [],
       dayjs: dayjs,
     };
   },
@@ -74,6 +96,70 @@ export default {
         }
       });
     },
+    sortDoingOrders() {
+      this.doingOrders.sort((a, b) => {
+        if (this.dayjs(a.arrive_at).diff(this.dayjs(b.arrive_at)) === 0) {
+          return this.dayjs(a.created_at).diff(this.dayjs(b.created_at));
+        } else {
+          return this.dayjs(a.arrive_at).diff(this.dayjs(b.arrive_at));
+        }
+      });
+    },
+    sortDoneOrders() {
+      this.doneOrders.sort((a, b) => {
+        if (this.dayjs(a.arrive_at).diff(this.dayjs(b.arrive_at)) === 0) {
+          return this.dayjs(a.created_at).diff(this.dayjs(b.created_at));
+        } else {
+          return this.dayjs(a.arrive_at).diff(this.dayjs(b.arrive_at));
+        }
+      });
+    },
+    ok() {
+      this.$toast.success(`Cập nhập thành công`, {
+        position: "bottom",
+        duration: 800,
+        queue: true,
+        max: 0,
+        pauseOnHover: false,
+      });
+    },
+    err(error) {
+      this.$toast.error(error.response.data.message, {
+        position: "bottom",
+        duration: 1500,
+        enqueue: true,
+        max: 0,
+        pauseOnHover: false,
+      });
+    },
+    async setDoingOrder(item) {
+      try {
+        item.added.element.status = "doing";
+        const orderId = item.added.element._id;
+        await this.$axios.post("admin/setOrderStatus", {
+          orderId: orderId,
+          status: "doing",
+        });
+        this.sortDoingOrders();
+        this.ok();
+      } catch (error) {
+        this.err(error);
+      }
+    },
+    async setDoneOrder(item) {
+      try {
+        item.added.element.status = "waiting";
+        const orderId = item.added.element._id;
+        await this.$axios.post("admin/setOrderStatus", {
+          orderId: orderId,
+          status: "waiting",
+        });
+        this.sortDoneOrders();
+        this.ok();
+      } catch (error) {
+        this.err(error);
+      }
+    },
     getTimeString(string) {
       return this.dayjs(string).format("HH:mm DD/MM/YYYY").toString();
     },
@@ -86,19 +172,20 @@ export default {
     );
     this.doingOrders = data.filter((el) => el.status === "doing");
     this.doneOrders = data.filter((el) => el.status === "waiting");
+    // this.cutWaitingOrders = this.waitingOrders.splice(0, this.limit);
+    // this.cutdoingOrders = this.doingOrders.splice(0, this.limit);
+    // this.cutWaitingOrders = this.waitingOrders.splice(0, this.limit);
   },
   mounted() {
     this.$socket.on("QueueChange", (data) => {
       this.waitingOrders.push(data.content);
       this.sortWaitingOrders();
-      console.log(this.waitingOrders);
       this.$notification.success({
         message: `Đã có thêm một đơn hàng `,
         description: `Thời gian nhận đơn: ${this.getTimeString(
           data.content.arrive_at
         )}`,
         placement: "bottomRight",
-        duration: null,
       });
     });
   },
@@ -128,5 +215,8 @@ export default {
 .ghost {
   border: 4px solid var(--secondary);
   transition: all 500ms;
+}
+.container-title {
+  font-size: 30px;
 }
 </style>

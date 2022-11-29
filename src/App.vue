@@ -24,7 +24,7 @@ export default {
         if (token) {
           this.$axios.defaults.headers.common["Authorization"] =
             "Bearer " + token;
-          if (!localStorage.getItem("admin") === "true") {
+          if (!localStorage.getItem("admin")) {
             await this.$axios.get("user/CheckAutoLogin");
             this.$router.replace({ name: "FoodView" });
           } else {

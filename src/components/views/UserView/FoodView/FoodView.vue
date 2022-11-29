@@ -77,7 +77,10 @@ export default {
   },
   async created() {
     await this.fetchAllFood();
-    await this.$store.dispatch("orders/fetchOrders");
+    await this.$store.dispatch("orders/fetchOrders", {
+      noAuth: false,
+      email: null,
+    });
 
     this.isLoading = false;
   },

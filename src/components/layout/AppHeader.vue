@@ -122,7 +122,7 @@ export default {
       this.showLogin = !this.showLogin;
     },
     ShowTrackMyOrder() {
-      this.$router.push({ name: "TrackMyOrderView" });
+      this.$router.push({ name: "TrackMyOrderViewAuth" });
     },
     logout() {
       this.$axios.defaults.headers.common["Authorization"] = "";
