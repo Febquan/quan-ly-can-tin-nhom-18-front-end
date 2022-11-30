@@ -16,11 +16,6 @@
                   <a-tag :color="getStatusColor(item.status)">
                     {{ this.getStatus(item.status) }}
                   </a-tag>
-                  <a-button
-                    type="primary"
-                    @click="$emit('openQrModal', item._id)"
-                    >QR CODE</a-button
-                  >
                 </div>
                 <div
                   v-for="i in item.order"
@@ -65,6 +60,12 @@
                   >
                     Hủy đơn đặt hàng
                   </a-button>
+                  <a-button
+                    type="primary"
+                    v-if="item.status == 'waiting'"
+                    @click="$emit('openQrModal', item._id)"
+                    >QR CODE</a-button
+                  >
                 </div>
               </div>
             </template>

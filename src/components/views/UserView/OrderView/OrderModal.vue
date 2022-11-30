@@ -161,7 +161,6 @@ export default {
       return current < dayjs().startOf("day");
     },
     disabledTime(h) {
-      console.log("ssds");
       const moment = dayjs(h);
       return {
         disabledHours: () =>

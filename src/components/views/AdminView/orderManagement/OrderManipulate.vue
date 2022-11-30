@@ -23,56 +23,20 @@
               :item="item"
               :key="item._id"
               class="order"
-              :isPayment="true"
-              @openPaymentModal="openPaymentModal"
+              :isChangeOrder="true"
+              @openChangeModal="openChangeModal"
             ></oneOrder>
           </div>
         </div>
       </div>
     </div>
-    <a-modal
-      v-model:visible="visible"
-      title="Thanh toán đơn hàng"
-      :centered="true"
-    >
-      <template #footer>
-        <div class="footer-container">
-          <a-spin class="spinner" v-if="isLoading" />
-          <a-button
-            key="submit"
-            type="primary"
-            @click="setPaymentDone"
-            v-if="!isLoading"
-            :disabled="extraMoney == 0 && cost != givenMoney"
-            >Thanh toán xong</a-button
-          >
-        </div>
-      </template>
-      <div class="modal-container">
-        <!-- <h1>Tổng thanh toán: {{ this.convertVND(this.cost) }}</h1>
-        <div>
-          <span>Khách đưa: </span>
-          <a-input-number
-            class="input-pay"
-            :default-value="cost"
-            :formatter="
-              (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-            "
-            :parser="(value) => value.replace(/\$\s?|(,*)/g, '')"
-            :step="1000"
-            v-model:value="givenMoney"
-          />
-          VNĐ
-        </div>
-        <h3>Tiền thối : {{ this.convertVND(this.extraMoney) }}</h3> -->
-      </div>
-    </a-modal>
   </div>
 </template>
 
 <script>
 import convertVND from "@/util/moneyformat";
 import oneOrder from "./oneOrder.vue";
+
 export default {
   name: "OrderPayment",
   components: {
@@ -98,15 +62,15 @@ export default {
   //   },
   // },
   methods: {
-    openPaymentModal({ cost, orderId }) {
+    openChangeModal({ cost, orderId }) {
       this.visible = true;
       this.cost = cost;
       this.orderId = orderId;
     },
-    async setPaymentDone() {
+    async ChangeOrder() {
       try {
         this.isLoading = true;
-        await this.$axios.put(`admin/paidOrder/${this.orderId}`);
+        // await this.$axios.put(`admin/paidOrder/${this.orderId}`);
         this.$toast.success(`Thanh toán thành công`, {
           position: "bottom",
           duration: 800,
@@ -214,7 +178,7 @@ export default {
 }
 .orders {
   padding: 20px;
-  max-height: 340px;
+  max-height: 380px;
   overflow-y: auto;
   width: 100%;
   height: 100%;

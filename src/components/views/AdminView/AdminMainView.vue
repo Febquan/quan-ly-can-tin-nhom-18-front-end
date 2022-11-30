@@ -50,11 +50,11 @@
           <template #title>
             <span>
               <team-outlined />
-              <span>Team</span>
+              <span>Quản lý kho hàng</span>
             </span>
           </template>
-          <a-menu-item key="6">Team 1</a-menu-item>
-          <a-menu-item key="8">Team 2</a-menu-item>
+          <a-menu-item key="4">Nhập kho</a-menu-item>
+          <a-menu-item key="5">Thông tin kho</a-menu-item>
         </a-sub-menu>
         <a-menu-item key="9">
           <file-outlined />

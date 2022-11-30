@@ -178,15 +178,28 @@ export default {
   },
   mounted() {
     this.$socket.on("QueueChange", (data) => {
-      this.waitingOrders.push(data.content);
-      this.sortWaitingOrders();
-      this.$notification.success({
-        message: `Đã có thêm một đơn hàng `,
-        description: `Thời gian nhận đơn: ${this.getTimeString(
-          data.content.arrive_at
-        )}`,
-        placement: "bottomRight",
-      });
+      if (data.message === "OrderAdded") {
+        this.waitingOrders.push(data.content);
+        this.sortWaitingOrders();
+        this.$notification.success({
+          message: `Đã có thêm một đơn hàng `,
+          description: `Thời gian nhận đơn: ${this.getTimeString(
+            data.content.arrive_at
+          )}`,
+          placement: "bottomRight",
+        });
+      }
+      if (data.message === "OrderRemoved") {
+        const index = this.waitingOrders.findIndex(
+          (el) => el._id === data.orderId
+        );
+        this.waitingOrders.splice(index, 1);
+        this.$notification.warning({
+          message: `Đã có một đơn hàng bị hủy `,
+          description: `Mã đơn: ${data.orderId}`,
+          placement: "bottomRight",
+        });
+      }
     });
   },
 };

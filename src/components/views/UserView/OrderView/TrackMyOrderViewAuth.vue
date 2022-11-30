@@ -53,9 +53,12 @@ export default {
       Qrcode: "",
     };
   },
-  // async mounted() {
-  //   await this.$store.dispatch("orders/fetchOrders", {});
-  // },
+  async mounted() {
+    await this.$store.dispatch("orders/fetchOrders", {
+      noAuth: false,
+      email: null,
+    });
+  },
   computed: {
     getDoneOrder() {
       return this.$store.getters["orders/getDoneOrders"];
