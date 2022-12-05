@@ -52,47 +52,8 @@ export default {
       orderId: "",
     };
   },
-  // computed: {
-  //   extraMoney() {
-  //     const sub = this.givenMoney - this.cost;
-  //     if (sub < 0) {
-  //       return 0;
-  //     }
-  //     return sub;
-  //   },
-  // },
-  methods: {
-    openChangeModal({ cost, orderId }) {
-      this.visible = true;
-      this.cost = cost;
-      this.orderId = orderId;
-    },
-    async ChangeOrder() {
-      try {
-        this.isLoading = true;
-        // await this.$axios.put(`admin/paidOrder/${this.orderId}`);
-        this.$toast.success(`Thanh toán thành công`, {
-          position: "bottom",
-          duration: 800,
-          queue: true,
-          max: 0,
-          pauseOnHover: false,
-        });
-        this.isLoading = false;
 
-        const id = this.order.findIndex((el) => el._id == this.orderId);
-        this.order[id].status = "paid";
-      } catch (error) {
-        this.$toast.error(error.response.data.message, {
-          position: "bottom",
-          duration: 2000,
-          queue: true,
-          max: 0,
-          pauseOnHover: false,
-        });
-        this.isLoading = false;
-      }
-    },
+  methods: {
     async onSearch() {
       try {
         this.isLoading = true;

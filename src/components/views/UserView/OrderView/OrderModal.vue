@@ -60,9 +60,7 @@
                       </h4>
                     </div>
                     <div class="hello3">
-                      <a-button
-                        class="delete-order"
-                        @click="delOrder(item.object._id)"
+                      <a-button class="delete-order" @click="delOrder(item)"
                         >Xóa</a-button
                       >
                       <h2 class="cost">
@@ -131,8 +129,8 @@ export default {
     },
   },
   methods: {
-    delOrder(id) {
-      this.$store.dispatch("cart/delCart", id);
+    delOrder(product) {
+      this.$store.dispatch("cart/delCart", product);
     },
     getDisabledHours(date, month, year) {
       var hours = [];

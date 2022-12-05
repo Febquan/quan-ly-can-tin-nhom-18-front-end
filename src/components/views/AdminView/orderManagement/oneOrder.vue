@@ -6,7 +6,7 @@
           >{{ this.order.onSite ? "Ăn tại chỗ" : "Mang về" }}
         </a-tag>
         <a-select
-          :value="this.order.onSite ? 'Ăn tại chỗ' : 'Mang về'"
+          :value="order.onSite ? 'Ăn tại chỗ' : 'Mang về'"
           @change="onSiteChange"
           size="small"
           v-if="changeState"
@@ -28,7 +28,7 @@
         :show-time="{ defaultValue: dayjs() }"
       />
       <a-tag :color="getStatusColor(order.status)" v-if="!changeState">
-        {{ this.getStatus(order.status) }}
+        {{ this.getStatus(this.order.status) }}
       </a-tag>
       <a-select
         :value="order.status"
@@ -38,7 +38,7 @@
         @change="onStatusChange"
       >
         <a-select-option value="trusted">Trong hàng đợi</a-select-option>
-        <a-select-option value="doing">Đã đang làm</a-select-option>
+        <a-select-option value="doing">Đang làm</a-select-option>
         <a-select-option value="waiting">Đã làm xong</a-select-option>
       </a-select>
     </div>
@@ -53,16 +53,10 @@
         <h3>{{ this.order.user.email }}</h3>
       </div>
       <div class="client" v-if="!order.user">
-        <h3>
-          {{ this.order.email }}
-        </h3>
+        <h3>{{ this.order.email }}</h3>
       </div>
     </div>
-    <div
-      v-for="(i, indexDish) in this.order.order"
-      :key="i.created_at"
-      class="food-info"
-    >
+    <div v-for="(i, indexDish) in order.order" :key="i._id" class="food-info">
       <a-divider />
       <div class="main-food">
         <h3>
@@ -119,8 +113,8 @@
         type="primary"
         @click="
           $emit('openPaymentModal', {
-            cost: this.order.cost,
-            orderId: this.order._id,
+            cost: order.cost,
+            orderId: order._id,
           })
         "
         >Thanh toán</a-button
@@ -167,6 +161,7 @@ export default {
     isPayment: Boolean,
     isChangeOrder: Boolean,
   },
+
   methods: {
     onSiteChange(value) {
       this.order.onSite = value;
@@ -295,15 +290,18 @@ export default {
       return current < dayjs().startOf("day");
     },
   },
-  mounted() {
-    console.log(this.item.arrive_at);
+
+  watch: {
+    "order.status"(val) {
+      console.log(val, "heloooooooo");
+    },
   },
+
   data() {
     return {
       dayjs: dayjs,
       convertVND: convertVND,
       changeState: false,
-
       order: JSON.parse(JSON.stringify(this.item)),
       // onSite: this.order.onSite ? "Ăn tại chỗ" : "Mang về",
       // arrive_at: dayjs(this.order.arrive_at),

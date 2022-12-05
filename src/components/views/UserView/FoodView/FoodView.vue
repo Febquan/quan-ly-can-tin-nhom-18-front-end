@@ -141,7 +141,6 @@ export default {
 }
 .food-view {
   min-height: 90vh;
-
   display: flex;
   justify-content: center;
   align-items: center;

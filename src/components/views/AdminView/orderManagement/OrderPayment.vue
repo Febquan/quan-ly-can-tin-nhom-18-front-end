@@ -128,6 +128,7 @@ export default {
 
         const id = this.order.findIndex((el) => el._id == this.orderId);
         this.order[id].status = "paid";
+        this.visible = false;
       } catch (error) {
         this.$toast.error(error.response.data.message, {
           position: "bottom",

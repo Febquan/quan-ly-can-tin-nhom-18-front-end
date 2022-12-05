@@ -10,9 +10,10 @@
         group="waiting-orders"
         @add="sortWaitingOrders"
         @remove="trigger"
+        item-key="_id"
       >
         <template #item="{ element }">
-          <oneOrderVue :item="element" :key="element._id"></oneOrderVue>
+          <oneOrderVue :item="element"></oneOrderVue>
         </template>
       </draggable>
     </div>
@@ -27,10 +28,11 @@
           name: 'doing-orders',
           put: ['waiting-orders'],
         }"
+        item-key="_id"
         @change="setDoingOrder"
       >
         <template #item="{ element }">
-          <oneOrderVue :item="element" :key="element._id"></oneOrderVue>
+          <oneOrderVue :item="element"></oneOrderVue>
         </template>
       </draggable>
     </div>
@@ -45,10 +47,11 @@
           put: ['waiting-orders', 'doing-orders'],
         }"
         :sort="false"
+        item-key="_id"
         @change="setDoneOrder"
       >
         <template #item="{ element }">
-          <oneOrderVue :item="element" :key="element._id"></oneOrderVue>
+          <oneOrderVue :item="element"></oneOrderVue>
         </template>
       </draggable>
     </div>
@@ -89,19 +92,19 @@ export default {
   methods: {
     sortWaitingOrders() {
       this.waitingOrders.sort((a, b) => {
-        if (this.dayjs(a.arrive_at).diff(this.dayjs(b.arrive_at)) === 0) {
-          return this.dayjs(a.created_at).diff(this.dayjs(b.created_at));
+        if (dayjs(a.arrive_at).diff(dayjs(b.arrive_at)) === 0) {
+          return dayjs(a.created_at).diff(dayjs(b.created_at));
         } else {
-          return this.dayjs(a.arrive_at).diff(this.dayjs(b.arrive_at));
+          return dayjs(a.arrive_at).diff(dayjs(b.arrive_at));
         }
       });
     },
     sortDoingOrders() {
       this.doingOrders.sort((a, b) => {
-        if (this.dayjs(a.arrive_at).diff(this.dayjs(b.arrive_at)) === 0) {
-          return this.dayjs(a.created_at).diff(this.dayjs(b.created_at));
+        if (dayjs(a.arrive_at).diff(dayjs(b.arrive_at)) === 0) {
+          return dayjs(a.created_at).diff(dayjs(b.created_at));
         } else {
-          return this.dayjs(a.arrive_at).diff(this.dayjs(b.arrive_at));
+          return dayjs(a.arrive_at).diff(dayjs(b.arrive_at));
         }
       });
     },

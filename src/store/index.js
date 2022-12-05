@@ -1,5 +1,7 @@
+import dayjs from "dayjs";
 import { createStore } from "vuex";
 import { ModuleAxios } from "../../plugins/axios";
+
 const axios = ModuleAxios({
   baseUrl: "http://localhost:8081/",
 });
@@ -17,10 +19,29 @@ const productsModule = {
       state.dish = dish;
       state.fastFoodAndDrink = fastFoodAndDrink;
       state.extraFood = extraFood;
+
+      //calulate num of fastFoodAndDrink
+      for (let i = 0; i < fastFoodAndDrink.length; i++) {
+        state.fastFoodAndDrink[i].amountAvailable = state.fastFoodAndDrink[
+          i
+        ].batch.reduce((sum, el) => {
+          if (dayjs().diff(dayjs(el.expiredDated)) <= 0) {
+            return sum + el.quantity;
+          } else {
+            return sum;
+          }
+        }, 0);
+        console.log(state.fastFoodAndDrink[i].amountAvailable);
+      }
     },
     setDishUnavailable(state, id) {
       const index = state.dish.findIndex((dish) => dish._id === id);
       state.dish[index].isAvailable = false;
+    },
+    updateFFADQuantity(state, { sub, id }) {
+      const i = state.fastFoodAndDrink.findIndex((el) => el._id == id);
+      state.fastFoodAndDrink[i].amountAvailable =
+        state.fastFoodAndDrink[i].amountAvailable - sub;
     },
   },
   actions: {
@@ -135,10 +156,24 @@ const cartModule = {
   },
   actions: {
     addCart(context, product) {
+      if (product.kind == "FastFoodAndDrink") {
+        context.commit(
+          "prods/updateFFADQuantity",
+          { id: product.object._id, sub: product.quantity },
+          { root: true }
+        );
+      }
       context.commit("addCart", product);
     },
-    delCart(context, productId) {
-      context.commit("delCart", productId);
+    delCart(context, product) {
+      if (product.kind == "FastFoodAndDrink") {
+        context.commit(
+          "prods/updateFFADQuantity",
+          { id: product.object._id, sub: -product.quantity },
+          { root: true }
+        );
+      }
+      context.commit("delCart", product.object._id);
     },
     resetCart(context) {
       context.commit("resetCart");

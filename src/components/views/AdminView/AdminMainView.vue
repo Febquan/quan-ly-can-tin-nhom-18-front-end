@@ -53,8 +53,14 @@
               <span>Quản lý kho hàng</span>
             </span>
           </template>
-          <a-menu-item key="4">Nhập kho</a-menu-item>
-          <a-menu-item key="5">Thông tin kho</a-menu-item>
+          <a-menu-item key="4">
+            <router-link :to="{ name: 'StorageManagement' }"
+              >Thông tin kho
+            </router-link>
+          </a-menu-item>
+          <a-menu-item key="5">
+            <router-link :to="{ name: '' }">Nhập kho</router-link>
+          </a-menu-item>
         </a-sub-menu>
         <a-menu-item key="9">
           <file-outlined />
@@ -99,9 +105,6 @@ export default {
 }
 .menu {
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 .slider {
   margin-top: 16px;

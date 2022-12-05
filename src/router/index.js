@@ -8,6 +8,7 @@ import AdminMainView from "@/components/views/AdminView/AdminMainView.vue";
 import OrderManagement from "@/components/views/AdminView/orderManagement/OrderManagement.vue";
 import OrderPayment from "@/components/views/AdminView/orderManagement/OrderPayment.vue";
 import OrderManipulate from "@/components/views/AdminView/orderManagement/OrderManipulate.vue";
+import StorageManagement from "@/components/views/AdminView/storageManagement/StorageManagement.vue";
 import store from "@/store";
 const routes = [
   {
@@ -57,6 +58,11 @@ const routes = [
         path: "orderManipulate",
         name: "OrderManipulate",
         component: OrderManipulate,
+      },
+      {
+        path: "storageManagement",
+        name: "StorageManagement",
+        component: StorageManagement,
       },
     ],
   },

@@ -13,7 +13,7 @@
           key="submit"
           type="primary"
           @click="addFFADToCart"
-          :disabled="!isAvailable"
+          :disabled="!FFAD.amountAvailable"
           >Thêm vào đơn hàng</a-button
         >
       </div>
@@ -24,9 +24,15 @@
         <h2 class="FFAD-price">
           {{ "Giá: " + this.convertVND(this.FFAD.price) }}
         </h2>
-        <a-tag class="FFAD-status" :color="isAvailable ? 'green' : 'red'">{{
-          isAvailable ? `Còn ${FFAD.amountAvailable} sản phẩm` : "Hết hàng"
-        }}</a-tag>
+        <a-tag
+          class="FFAD-status"
+          :color="FFAD.amountAvailable ? 'green' : 'red'"
+          >{{
+            this.FFAD.amountAvailable
+              ? `Còn ${this.FFAD.amountAvailable} sản phẩm`
+              : "Hết hàng"
+          }}</a-tag
+        >
         <div class="number-input">
           <h3>Số lượng:</h3>
           <a-input-number
@@ -53,9 +59,16 @@ export default {
     calCost() {
       return this.FFAD.price * this.amount;
     },
-    isAvailable() {
-      return this.FFAD.amountAvailable > 0;
-    },
+
+    // amountAvailable() {
+    //   let amountAvailable = 0;
+    //   for (const i of this.FFAD.batch) {
+    //     if (dayjs().diff(dayjs(i.expiredDated) < 0)) {
+    //       amountAvailable = amountAvailable + i.quantity;
+    //     }
+    //   }
+    //   return amountAvailable;
+    // },
   },
   components: {},
   data() {

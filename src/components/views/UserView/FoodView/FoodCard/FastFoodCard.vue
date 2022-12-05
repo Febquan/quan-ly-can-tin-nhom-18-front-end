@@ -19,6 +19,7 @@
 
 <script>
 import convertVND from "@/util/moneyformat";
+import dayjs from "dayjs";
 export default {
   props: {
     FastFood: Object,
@@ -26,7 +27,13 @@ export default {
   components: {},
   computed: {
     isAvailable() {
-      return this.FastFood.amountAvailable > 0;
+      let amountAvailable = 0;
+      for (const i of this.FastFood.batch) {
+        if (dayjs().diff(dayjs(i.expiredDated) < 0)) {
+          amountAvailable = amountAvailable + i.quantity;
+        }
+      }
+      return amountAvailable > 0;
     },
   },
   methods: {
