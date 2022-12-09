@@ -58,7 +58,8 @@
     </div>
     <div v-for="(i, indexDish) in order.order" :key="i._id" class="food-info">
       <a-divider />
-      <div class="main-food">
+      <span v-if="!i.object">Sản phẩm đã bị xóa và không có dữ liệu</span>
+      <div class="main-food" v-if="i.object">
         <h3>
           {{ i.object.name }}
           <span v-if="!changeState">{{ ` (${i.quantity})` }}</span>
@@ -72,13 +73,26 @@
         </h3>
         <h3>{{ this.convertVND(i.object.price * i.quantity) }}</h3>
       </div>
-
+      <div
+        v-if="i.object && i.kind == 'FastFoodAndDrink' && !isChangeOrder"
+        class="batch"
+      >
+        <span v-for="batch in i.batchInfo" :key="batch._id">
+          <span v-if="batch.quantity">
+            Số lượng: {{ batch.quantity }} lô hàng
+            {{ this.getTimeIDString(i.object.name, batch.buyDate) }}
+          </span>
+        </span>
+      </div>
       <div
         class="extra-food"
         v-for="(extraFood, indexEx) in i.extraFood"
         :key="extraFood._id"
       >
-        <h4>
+        <span v-if="!extraFood.object"
+          >Sả n phẩm đã bị xóa và không có dữ liệu</span
+        >
+        <h4 v-if="extraFood.object">
           +
           {{ extraFood.object.name }}
           <span v-if="!changeState">{{ ` (${extraFood.quantity})` }}</span>
@@ -93,7 +107,7 @@
           />
         </h4>
 
-        <h4>
+        <h4 v-if="extraFood.object">
           {{ this.convertVND(extraFood.object.price * extraFood.quantity) }}
         </h4>
       </div>
@@ -161,7 +175,11 @@ export default {
     isPayment: Boolean,
     isChangeOrder: Boolean,
   },
-
+  computed: {
+    ifQuantity(quantity) {
+      return quantity > 0;
+    },
+  },
   methods: {
     onSiteChange(value) {
       this.order.onSite = value;
@@ -259,6 +277,11 @@ export default {
     getTimeString(string) {
       return this.dayjs(string).format("HH:mm DD/MM/YYYY").toString();
     },
+    getTimeIDString(name, string) {
+      return (
+        name.trim() + this.dayjs(string).format("DDMMYYYYHHmm ").toString()
+      );
+    },
     getStatus(string) {
       if (string === "doing") {
         return "Đang làm";
@@ -292,11 +315,17 @@ export default {
   },
 
   watch: {
-    "order.status"(val) {
-      console.log(val, "heloooooooo");
+    item: {
+      immediate: true,
+      deep: true,
+      handler(newValue) {
+        this.order = JSON.parse(JSON.stringify(newValue));
+      },
     },
   },
-
+  created() {
+    console.log(this.order);
+  },
   data() {
     return {
       dayjs: dayjs,
@@ -363,5 +392,9 @@ export default {
 }
 .pay-button {
   width: 98%;
+}
+.batch {
+  display: flex;
+  flex-direction: column;
 }
 </style>

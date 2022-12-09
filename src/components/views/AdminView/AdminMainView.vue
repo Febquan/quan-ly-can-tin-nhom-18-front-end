@@ -31,41 +31,50 @@
             </router-link>
           </a-menu-item>
         </a-sub-menu>
-        <!-- <a-menu-item key="2">
-          <desktop-outlined />
-          <span>Quản lý sản phẩm</span>
-        </a-menu-item> -->
-        <!-- <a-sub-menu key="sub1">
-          <template #title>
-            <span>
-              <user-outlined />
-              <span>Quản lý </span>
-            </span>
-          </template>
-          <a-menu-item key="3">Tom</a-menu-item>
-          <a-menu-item key="4">Bill</a-menu-item>
-          <a-menu-item key="5">Alex</a-menu-item>
-        </a-sub-menu> -->
         <a-sub-menu key="sub2">
           <template #title>
             <span>
-              <team-outlined />
-              <span>Quản lý kho hàng</span>
+              <ShopFilled />
+              <span>Quản lý món ăn</span>
             </span>
           </template>
           <a-menu-item key="4">
+            <router-link :to="{ name: 'MenuManagement' }"
+              >Xây dựng thực đơn
+            </router-link>
+          </a-menu-item>
+          <a-menu-item key="5">
+            <router-link :to="{ name: 'StorageInput' }"
+              >Chỉnh sửa các món ăn</router-link
+            >
+          </a-menu-item>
+          <a-menu-item key="6">
+            <router-link :to="{ name: 'StorageChange' }"
+              >Dữ liệu món ăn</router-link
+            >
+          </a-menu-item>
+        </a-sub-menu>
+        <a-sub-menu key="sub3">
+          <template #title>
+            <span>
+              <AppstoreFilled />
+              <span>Quản lý kho hàng</span>
+            </span>
+          </template>
+          <a-menu-item key="7">
             <router-link :to="{ name: 'StorageManagement' }"
               >Thông tin kho
             </router-link>
           </a-menu-item>
-          <a-menu-item key="5">
-            <router-link :to="{ name: '' }">Nhập kho</router-link>
+          <a-menu-item key="8">
+            <router-link :to="{ name: 'StorageInput' }">Nhập kho</router-link>
+          </a-menu-item>
+          <a-menu-item key="9">
+            <router-link :to="{ name: 'StorageChange' }"
+              >Chỉnh sửa kho</router-link
+            >
           </a-menu-item>
         </a-sub-menu>
-        <a-menu-item key="9">
-          <file-outlined />
-          <span>File</span>
-        </a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout style="min-height: 100%">
@@ -77,11 +86,13 @@
 </template>
 
 <script>
-import { BookFilled } from "@ant-design/icons-vue";
+import { BookFilled, AppstoreFilled, ShopFilled } from "@ant-design/icons-vue";
 export default {
   name: "AdminMainView",
   components: {
     BookFilled,
+    AppstoreFilled,
+    ShopFilled,
   },
   data() {
     return {
@@ -104,7 +115,7 @@ export default {
   min-height: 100%;
 }
 .menu {
-  height: 100%;
+  max-height: 100%;
 }
 .slider {
   margin-top: 16px;

@@ -33,7 +33,7 @@ export default {
           amountAvailable = amountAvailable + i.quantity;
         }
       }
-      return amountAvailable > 0;
+      return amountAvailable > 0 && this.FastFood.isAvailable;
     },
   },
   methods: {

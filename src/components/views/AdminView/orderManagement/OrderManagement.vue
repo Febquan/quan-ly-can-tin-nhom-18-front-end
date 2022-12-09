@@ -138,6 +138,7 @@ export default {
     async setDoingOrder(item) {
       try {
         item.added.element.status = "doing";
+        this.doingOrders = [...this.doingOrders];
         const orderId = item.added.element._id;
         await this.$axios.post("admin/setOrderStatus", {
           orderId: orderId,
@@ -179,6 +180,7 @@ export default {
     // this.cutdoingOrders = this.doingOrders.splice(0, this.limit);
     // this.cutWaitingOrders = this.waitingOrders.splice(0, this.limit);
   },
+
   mounted() {
     this.$socket.on("QueueChange", (data) => {
       if (data.message === "OrderAdded") {

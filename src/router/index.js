@@ -9,6 +9,9 @@ import OrderManagement from "@/components/views/AdminView/orderManagement/OrderM
 import OrderPayment from "@/components/views/AdminView/orderManagement/OrderPayment.vue";
 import OrderManipulate from "@/components/views/AdminView/orderManagement/OrderManipulate.vue";
 import StorageManagement from "@/components/views/AdminView/storageManagement/StorageManagement.vue";
+import StorageInput from "@/components/views/AdminView/storageManagement/StorageInput.vue";
+import StorageChange from "@/components/views/AdminView/storageManagement/StorageChange.vue";
+import MenuManagement from "@/components/views/AdminView/menuManagement/menuManagement.vue";
 import store from "@/store";
 const routes = [
   {
@@ -63,6 +66,21 @@ const routes = [
         path: "storageManagement",
         name: "StorageManagement",
         component: StorageManagement,
+      },
+      {
+        path: "storageInput",
+        name: "StorageInput",
+        component: StorageInput,
+      },
+      {
+        path: "storageChange",
+        name: "StorageChange",
+        component: StorageChange,
+      },
+      {
+        path: "menuManagement",
+        name: "MenuManagement",
+        component: MenuManagement,
       },
     ],
   },

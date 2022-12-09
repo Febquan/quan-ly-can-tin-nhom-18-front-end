@@ -1,12 +1,21 @@
 <template>
   <div class="container">
     <div class="storageManagement-container">
+      <a-input-search
+        class="search"
+        placeholder="Tên sản phẩm"
+        size="large"
+        v-model:value="search"
+        @change="onSearch"
+      ></a-input-search>
+
       <a-table
         class="table"
         :columns="columns"
-        :data-source="data"
+        :data-source="display"
         :scroll="{ y: 410 }"
         :row-class-name="'row'"
+        :pagination="false"
       >
         <template #headerCell="{ column }">
           <template v-if="column.key === 'batch'">
@@ -25,9 +34,7 @@
 
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'name'">
-            <a>
-              {{ record.name }}
-            </a>
+            <a> {{ record.name }} </a>
           </template>
           <template v-else-if="column.key === 'image'">
             <div class="img-container">
@@ -37,6 +44,16 @@
           <template v-else-if="column.key === 'price'">
             <span>
               {{ this.convertVND(record.price) }}
+            </span>
+          </template>
+          <template v-else-if="column.key === 'numOfItem'">
+            <span>
+              {{ record.numOfItem }}
+            </span>
+          </template>
+          <template v-else-if="column.key === 'moneyValue'">
+            <span>
+              {{ this.convertVND(record.moneyValue) }}
             </span>
           </template>
           <template v-else-if="column.key === 'batch'">
@@ -50,21 +67,44 @@
             >
               <template #bodyCell="{ column, record }">
                 <template v-if="column.key === 'quantity'">
-                  <span>{{ record.quantity }} </span>
+                  <span
+                    :class="{
+                      expired: this.dayjs().diff(record.expiredDated) > 0,
+                    }"
+                    >{{ record.quantity }}
+                  </span>
                 </template>
                 <template v-if="column.key === 'initialQuantity'">
-                  <span>{{ record.initialQuantity }} </span>
+                  <span
+                    :class="{
+                      expired: this.dayjs().diff(record.expiredDated) > 0,
+                    }"
+                    >{{ record.initialQuantity }}
+                  </span>
                 </template>
                 <template v-if="column.key === 'buyPrice'">
-                  <span>{{ this.convertVND(record.buyPrice) }}</span>
+                  <span
+                    :class="{
+                      expired: this.dayjs().diff(record.expiredDated) > 0,
+                    }"
+                    >{{ this.convertVND(record.buyPrice) }}</span
+                  >
                 </template>
                 <template v-if="column.key === 'buyDate'">
-                  <span>{{ dayjs(record.buyDate).format("DD/MM/YYYY") }}</span>
+                  <span
+                    :class="{
+                      expired: this.dayjs().diff(record.expiredDated) > 0,
+                    }"
+                    >{{ dayjs(record.buyDate).format("DD/MM/YYYY") }}</span
+                  >
                 </template>
                 <template v-if="column.key === 'expiredDate'">
-                  <span>{{
-                    dayjs(record.expiredDated).format("DD/MM/YYYY")
-                  }}</span>
+                  <span
+                    :class="{
+                      expired: this.dayjs().diff(record.expiredDated) > 0,
+                    }"
+                    >{{ dayjs(record.expiredDated).format("DD/MM/YYYY") }}</span
+                  >
                 </template>
               </template>
             </a-table>
@@ -80,6 +120,7 @@ import convertVND from "@/util/moneyformat";
 import dayjs from "dayjs";
 
 import { defineComponent } from "vue";
+
 const columns = [
   {
     title: "Tên sản phẩm",
@@ -104,12 +145,19 @@ const columns = [
     key: "batch",
 
     align: "center",
-    width: "55%",
+    width: "50%",
     height: 100,
   },
   {
-    title: "Tổng giá trị",
-    key: "value",
+    title: "Tổng tồn kho",
+    key: "numOfItem",
+    align: "center",
+  },
+  {
+    title: "Tổng giá trị tồn kho",
+    key: "moneyValue",
+    align: "center",
+    width: "10%",
   },
 ];
 const innerCol = [
@@ -144,74 +192,34 @@ const innerCol = [
     align: "center",
   },
 ];
-// const data = [
-//   {
-//     key: "1",
-//     name: "John Brown",
-//     age: 32,
-//     address: "New York No. 1 Lake Park",
-//     tags: ["nice", "developer"],
-//   },
-//   {
-//     key: "2",
-//     name: "Jim Green",
-//     age: 42,
-//     address: "London No. 1 Lake Park",
-//     tags: ["loser"],
-//   },
-//   {
-//     key: "3",
-//     name: "Joe Black",
-//     age: 32,
-//     address: "Sidney No. 1 Lake Park",
-//     tags: ["cool", "teacher"],
-//   },
-//   {
-//     key: "3",
-//     name: "Joe Black",
-//     age: 32,
-//     address: "Sidney No. 1 Lake Park",
-//     tags: ["cool", "teacher"],
-//   },
-//   {
-//     key: "3",
-//     name: "Joe Black",
-//     age: 32,
-//     address: "Sidney No. 1 Lake Park",
-//     tags: ["cool", "teacher"],
-//   },
-//   {
-//     key: "3",
-//     name: "Joe Black",
-//     age: 32,
-//     address: "Sidney No. 1 Lake Park",
-//     tags: ["cool", "teacher"],
-//   },
-//   {
-//     key: "3",
-//     name: "Joe Black",
-//     age: 32,
-//     address: "Sidney No. 1 Lake Park",
-//     tags: ["cool", "teacher"],
-//   },
-//   {
-//     key: "3",
-//     name: "Joe Black",
-//     age: 32,
-//     address: "Sidney No. 1 Lake Park",
-//     tags: ["cool", "teacher"],
-//   },
-// ];
 
 export default defineComponent({
   components: {},
   async created() {
     const temp = await this.$axios.get("admin/seeFastFoodAndDrink");
-    this.data = temp.data.content;
+    let FastFoodAndDrink = temp.data.content;
+    this.data = FastFoodAndDrink.map((FFAD) => ({
+      ...FFAD,
+      numOfItem: FFAD.batch.reduce((b, cur) => b + cur.quantity, 0),
+      moneyValue: FFAD.batch.reduce(
+        (b, cur) => b + cur.quantity * cur.buyPrice,
+        0
+      ),
+    }));
+    this.display = this.data;
+  },
+  methods: {
+    onSearch() {
+      this.display = this.data.filter((item) =>
+        item.name.toLowerCase().includes(this.search.toLowerCase())
+      );
+    },
   },
   data() {
     return {
+      search: "",
       data: null,
+      display: null,
       columns,
       convertVND,
       innerCol,
@@ -256,17 +264,16 @@ export default defineComponent({
   border: 4px solid var(--primary);
 
   border-radius: 20px;
-  display: grid;
-  grid-template-columns: 1fr;
-  justify-content: center;
-  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
 
+  align-items: flex-start;
+  gap: 10px;
   padding: 20px;
   height: 100%;
 }
 .table {
-  max-height: 100%;
-  overflow-y: auto;
+  max-height: 200px;
 }
 .table :deep(.row) {
   background-color: white;
@@ -279,7 +286,11 @@ export default defineComponent({
   pointer-events: none;
 }
 .table :deep(.ant-table-thead .ant-table-cell) {
-  height: 100px;
+  height: 50px;
+}
+
+.table :deep(.ant-table-body) {
+  height: 370px;
 }
 .dummy {
   display: flex;
@@ -304,5 +315,8 @@ export default defineComponent({
 .giamua {
   position: relative;
   left: -25px;
+}
+.expired {
+  color: rgb(255, 78, 78);
 }
 </style>

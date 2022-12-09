@@ -96,6 +96,9 @@ export default {
       this.dish = dish;
     },
     addFFADHandler(FFAD) {
+      if (!FFAD.isAvailable) {
+        return;
+      }
       this.toggleAddFFADVisible();
       this.fastFoodAndDrink = FFAD;
     },
