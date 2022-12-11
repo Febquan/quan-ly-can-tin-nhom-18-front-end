@@ -1,13 +1,13 @@
 <template>
   <div class="container">
-    <div class="FFAD-container">
-      <div class="FFAD-inner-container">
-        <a-empty v-if="!FFAD" />
+    <div class="Food-container">
+      <div class="Food-inner-container">
+        <a-empty v-if="!Food" />
 
         <a-input-search
           class="search"
           v-model:value="search"
-          placeholder="Tên sản phẩm trong kho"
+          placeholder="Tên món ăn bạn muốn tìm"
           size="large"
           @search="onSearch"
         >
@@ -16,9 +16,9 @@
           </template>
         </a-input-search>
         <a-spin v-if="isLoading" class="spin"></a-spin>
-        <div class="FFADs" v-if="!isLoading && FFAD">
-          <div class="FFAD-wrap">
-            <oneFFAD v-for="item in FFAD" :key="item._id" :item="item" />
+        <div class="Foods" v-if="!isLoading && Food">
+          <div class="Food-wrap">
+            <FoodCardChange v-for="item in Food" :key="item._id" :prod="item" />
           </div>
         </div>
       </div>
@@ -28,13 +28,13 @@
 
 <script>
 import convertVND from "@/util/moneyformat";
-import oneFFAD from "./oneFFAD.vue";
+import FoodCardChange from "./FoodCardChange.vue";
 export default {
   name: "StorageChange",
-  components: { oneFFAD },
+  components: { FoodCardChange },
   data() {
     return {
-      FFAD: null,
+      Food: null,
       isLoading: false,
       search: "",
       convertVND: convertVND,
@@ -45,10 +45,10 @@ export default {
     async onSearch() {
       try {
         this.isLoading = true;
-        const res = await this.$axios.post("admin/searchFastFoodAndDrink", {
+        const res = await this.$axios.post("/admin/searchFood ", {
           search: this.search,
         });
-        this.FFAD = res.data.content;
+        this.Food = res.data.content;
 
         this.$toast.success(`Đã tìm thấy sản phẩm trong kho`, {
           position: "bottom",
@@ -82,7 +82,7 @@ export default {
   padding: 24px;
   column-gap: 30px;
 }
-.FFAD-inner-container {
+.Food-inner-container {
   height: 100%;
   width: 100%;
   display: flex;
@@ -90,7 +90,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.FFAD-container {
+.Food-container {
   border: 4px solid var(--primary);
   overflow-y: auto;
   border-radius: 20px;
@@ -102,17 +102,17 @@ export default {
   padding: 20px;
   height: 100%;
 }
-.FFAD {
+.Food {
   width: 1100px;
   box-shadow: 0 0 10px var(--grey);
   padding: 25px;
 }
-.FFAD:hover {
+.Food:hover {
   border-radius: 20px;
   box-shadow: 0 0 20px var(--grey);
   transition: box-shadow 200ms ease;
 }
-.FFAD-wrap {
+.Food-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -124,7 +124,7 @@ export default {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.FFADs {
+.Foods {
   padding: 20px;
   /* max-height: 380px; */
   overflow-y: auto;

@@ -44,13 +44,11 @@
             </router-link>
           </a-menu-item>
           <a-menu-item key="5">
-            <router-link :to="{ name: 'StorageInput' }"
-              >Chỉnh sửa các món ăn</router-link
-            >
+            <router-link :to="{ name: 'MenuInput' }">Thêm món ăn</router-link>
           </a-menu-item>
           <a-menu-item key="6">
-            <router-link :to="{ name: 'StorageChange' }"
-              >Dữ liệu món ăn</router-link
+            <router-link :to="{ name: 'MenuChange' }"
+              >Chỉnh sửa món ăn</router-link
             >
           </a-menu-item>
         </a-sub-menu>

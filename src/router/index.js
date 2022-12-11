@@ -12,6 +12,8 @@ import StorageManagement from "@/components/views/AdminView/storageManagement/St
 import StorageInput from "@/components/views/AdminView/storageManagement/StorageInput.vue";
 import StorageChange from "@/components/views/AdminView/storageManagement/StorageChange.vue";
 import MenuManagement from "@/components/views/AdminView/menuManagement/menuManagement.vue";
+import MenuInput from "@/components/views/AdminView/menuManagement/menuInput.vue";
+import MenuChange from "@/components/views/AdminView/menuManagement/menuChange.vue";
 import store from "@/store";
 const routes = [
   {
@@ -81,6 +83,16 @@ const routes = [
         path: "menuManagement",
         name: "MenuManagement",
         component: MenuManagement,
+      },
+      {
+        path: "menuInput",
+        name: "MenuInput",
+        component: MenuInput,
+      },
+      {
+        path: "menuChange",
+        name: "MenuChange",
+        component: MenuChange,
       },
     ],
   },

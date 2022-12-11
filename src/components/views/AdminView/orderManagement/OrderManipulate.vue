@@ -92,7 +92,6 @@ export default {
   display: grid;
   padding: 24px;
   column-gap: 30px;
-  align-content: center;
 }
 .order-inner-container {
   height: 100%;
@@ -101,6 +100,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
 }
 .order-container {
   border: 4px solid var(--primary);
@@ -110,10 +110,9 @@ export default {
   grid-template-columns: 1fr;
   justify-content: center;
   align-items: center;
-
+  overflow-y: auto;
   padding: 20px;
-  height: 600px;
-  max-height: 540px;
+  height: 100%;
 }
 .order {
   width: 450px;
@@ -139,7 +138,7 @@ export default {
 }
 .orders {
   padding: 20px;
-  max-height: 380px;
+  /* max-height: 380px; */
   overflow-y: auto;
   width: 100%;
   height: 100%;
