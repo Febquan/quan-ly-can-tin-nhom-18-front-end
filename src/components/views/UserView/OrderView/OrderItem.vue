@@ -11,7 +11,7 @@
                     <a-tag>{{ item.onSite ? "Ăn tại chỗ" : "Mang về" }} </a-tag>
                   </div>
                   <a-tag>
-                    {{ this.getTimeString(item.created_at) }}
+                    {{ this.getTimeString(item.arrive_at) }}
                   </a-tag>
                   <a-tag :color="getStatusColor(item.status)">
                     {{ this.getStatus(item.status) }}

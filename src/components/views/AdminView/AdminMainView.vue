@@ -34,13 +34,13 @@
         <a-sub-menu key="sub2">
           <template #title>
             <span>
-              <ShopFilled />
+              <FireFilled></FireFilled>
               <span>Quản lý món ăn</span>
             </span>
           </template>
           <a-menu-item key="4">
             <router-link :to="{ name: 'MenuManagement' }"
-              >Xây dựng thực đơn
+              >Khóa món ăn
             </router-link>
           </a-menu-item>
           <a-menu-item key="5">
@@ -73,6 +73,27 @@
             >
           </a-menu-item>
         </a-sub-menu>
+        <a-sub-menu key="sub4">
+          <template #title>
+            <span>
+              <ShopFilled />
+              <span>Quản lý bán hàng</span>
+            </span>
+          </template>
+          <a-menu-item key="10">
+            <router-link :to="{ name: 'DailyAmount' }"
+              >Suất ăn trong ngày</router-link
+            >
+          </a-menu-item>
+          <a-menu-item key="11">
+            <router-link :to="{ name: 'DailyBusiness' }"
+              >Kết toán theo ngày</router-link
+            >
+          </a-menu-item>
+          <a-menu-item key="12">
+            <router-link :to="{ name: '' }">Thống kê doanh số</router-link>
+          </a-menu-item>
+        </a-sub-menu>
       </a-menu>
     </a-layout-sider>
     <a-layout style="min-height: 100%">
@@ -84,13 +105,19 @@
 </template>
 
 <script>
-import { BookFilled, AppstoreFilled, ShopFilled } from "@ant-design/icons-vue";
+import {
+  BookFilled,
+  AppstoreFilled,
+  ShopFilled,
+  FireFilled,
+} from "@ant-design/icons-vue";
 export default {
   name: "AdminMainView",
   components: {
     BookFilled,
     AppstoreFilled,
     ShopFilled,
+    FireFilled,
   },
   data() {
     return {
@@ -114,6 +141,13 @@ export default {
 }
 .menu {
   max-height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.menu::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
 }
 .slider {
   margin-top: 16px;

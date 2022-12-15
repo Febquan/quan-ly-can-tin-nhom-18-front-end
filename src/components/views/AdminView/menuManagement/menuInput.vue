@@ -55,7 +55,7 @@
         </a-form-item>
         <a-form-item label="Thông tin về món ăn" v-if="type == 'Dish'">
           <a-textarea
-            v-model="info"
+            v-model:value="info"
             :rows="4"
             placeholder="Thông tin thêm về món ăn, một phần ăn bao gồm những gì ?"
             :maxlength="200"

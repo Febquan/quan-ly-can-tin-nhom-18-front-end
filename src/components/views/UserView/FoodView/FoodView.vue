@@ -91,8 +91,9 @@ export default {
     toggleAddFFADVisible() {
       this.addFFADVisible = !this.addFFADVisible;
     },
-    addDishHandler(dish) {
+    addDishHandler(dish, future) {
       this.toggleAddDishVisible();
+      dish.future = future;
       this.dish = dish;
     },
     addFFADHandler(FFAD) {
@@ -121,6 +122,7 @@ export default {
       addFFADVisible: false,
       isLoading: true,
       dish: {},
+      future: false,
       fastFoodAndDrink: {},
       extraFood: {},
     };

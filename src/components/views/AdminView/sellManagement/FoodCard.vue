@@ -1,12 +1,8 @@
 <template>
   <a-card
     class="body-card"
-    :class="{
-      isAvailable: product.isAvailable,
-      isNotAvailable: !product.isAvailable,
-    }"
     @click="toggleAvailable"
-    style="width: 220px; height: 220px"
+    style="width: 250px; height: 270px"
   >
     <div class="fast-food-img-container">
       <img class="fast-food-img" alt="món ăn" :src="product.imgUrl" />
@@ -14,22 +10,32 @@
     <div class="fast-food-description">
       <h1 class="fast-food-name">{{ this.product.name }}</h1>
     </div>
-    <span class="amount" v-if="type == 'Dish' || type == 'ExtraFood'"
+    <span class="amount-available" v-if="type == 'Dish' || type == 'ExtraFood'"
       >Còn {{ this.product.amountAvailable }}/
       {{ this.product.everyDayAmount }} suất</span
     >
-    <span class="amount" v-if="type == 'FFAD'"
+    <span class="amount-available" v-if="type == 'FFAD'"
       >Còn {{ this.product.batch.reduce((b, cur) => b + cur.quantity, 0) }} suất
     </span>
     <div class="fast-food-info">
       <h4 class="fast-food-price">
-        <span>Giá:</span> {{ this.convertVND(this.product.price) }}
+        <span>Trung bình:</span>
+        {{ this.convertVND(this.product.price) }}
       </h4>
-      <a-tag
-        class="fast-food-status"
-        :color="product.isAvailable ? 'green' : 'red'"
-        >{{ product.isAvailable ? "Đang mở bán" : "Khóa" }}</a-tag
-      >
+    </div>
+    <div v-if="type == 'Dish' || type == 'ExtraFood'">
+      <a-popover trigger="click">
+        <template #content>
+          <a-input-number
+            v-model:value="this.product.everyDayAmount"
+            :min="0"
+            @blur="updateAmount"
+          />
+        </template>
+        <a-button class="amount"
+          >{{ this.product.everyDayAmount }} suất/ngày</a-button
+        >
+      </a-popover>
     </div>
   </a-card>
 </template>
@@ -46,22 +52,19 @@ export default {
   components: {},
   computed: {},
   methods: {
-    async toggleAvailable() {
+    async updateAmount() {
       try {
-        await this.$axios.post("admin/toggleAvailable", {
-          foodId: this.product._id,
-          isAvailable: !this.product.isAvailable,
-          type: this.type,
+        this.$axios.post("/admin/findFoodUpdateEveryDayAmount", {
+          id: this.product._id,
+          amount: this.product.everyDayAmount,
         });
-
-        this.$toast.success(`Thay đổi thành công`, {
+        this.$toast.success(`Sửa thành công`, {
           position: "bottom",
           duration: 800,
           queue: true,
           max: 0,
           pauseOnHover: false,
         });
-        this.product.isAvailable = !this.product.isAvailable;
       } catch (error) {
         this.$toast.error(error.response.data.message, {
           position: "bottom",
@@ -72,11 +75,15 @@ export default {
         });
       }
     },
+    toggleAvailable() {
+      this.isChange = !this.isChange;
+    },
   },
   data() {
     return {
       convertVND: convertVND,
       product: this.prod,
+      isChange: false,
     };
   },
 };
@@ -102,7 +109,6 @@ export default {
   box-shadow: 0px 0px 10px rgb(208, 208, 208);
   transition: box-shadow 300ms;
   justify-self: center;
-  position: relative;
 }
 .body-card:hover {
   box-shadow: 0px 0px 20px rgb(167, 167, 167);
@@ -118,7 +124,7 @@ export default {
 }
 .fast-food-name {
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.1rem;
   max-width: 100%;
 }
 .fast-food-price {
@@ -136,24 +142,27 @@ export default {
 .fast-food-status {
   font-size: 0.5rem;
 }
-.plus {
-  top: 10%;
-  right: 10%;
-  position: absolute;
-}
-.available {
-  color: var(--primary);
-}
-.unAvailable {
-  color: var(--grey);
-}
-.isAvailable {
-  border-bottom: 8px solid rgb(11, 204, 107);
-}
-.isNotAvailable {
-  border-bottom: 8px solid rgb(232, 65, 65);
-}
+
 .amount {
+  font-size: 1rem;
+  align-self: left;
+  background-color: var(--primary);
+  color: white;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  /* transform: translateX(-50%); */
+  padding: 5px;
+  border-radius: 0 0 20px 20px;
+  border: none;
+}
+.amount:hover {
+  background-color: var(--secondary);
+  transition: background-color 300ms;
+}
+.amount-available {
   font-size: 0.8rem;
   align-self: left;
   background-color: var(--primary);

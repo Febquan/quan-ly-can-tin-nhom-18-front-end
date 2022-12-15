@@ -64,6 +64,7 @@
             :key="extra._id"
             :extraFood="extra"
             @click="addExtraFood(extra)"
+            :future="dish.future"
           ></ExtraFoodCardVue>
         </div>
       </div>
@@ -140,7 +141,15 @@ export default {
       this.quantity = "";
     },
     addExtraFood(extraFood) {
-      if (!extraFood.isAvailable) {
+      console.log(
+        extraFood.isAvailable,
+        extraFood.amountAvailable,
+        !extraFood.isAvailable && !extraFood.amountAvailable > 0
+      );
+      if (
+        (!extraFood.isAvailable || !extraFood.amountAvailable > 0) &&
+        !this.dish.future
+      ) {
         return;
       }
       const extra = {
@@ -164,9 +173,6 @@ export default {
         this.$store.dispatch("cart/addCart", {
           kind: "Dish",
           object: this.dish,
-          // object: {
-          //   _id: this.dish._id,
-          // },
           description: this.description,
           extraFood: this.extraFood,
           quantity: this.quantity,

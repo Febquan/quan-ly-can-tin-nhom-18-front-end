@@ -10,18 +10,33 @@
       <h4 class="dish-price">
         <span>Giá:</span> {{ this.convertVND(this.dish.price) }}
       </h4>
-      <a-tag class="dish-status" :color="dish.isAvailable ? 'green' : 'red'">{{
-        dish.isAvailable ? "Còn hàng" : "Hết hàng"
+      <a-tag class="dish-status" :color="sellAble ? 'green' : 'red'">{{
+        sellAble ? "Còn hàng" : "Hết hàng"
       }}</a-tag>
     </div>
 
     <a-button
-      :disabled="!dish.isAvailable"
+      v-if="this.dish.amountAvailable > 0"
       class="add-dish-button"
       type="primary"
       @click="$emit('addDish', dish)"
+      :disabled="!this.dish.isAvailable"
       >Thêm vào đơn hàng</a-button
     >
+    <a-popconfirm
+      title="Vì món ăn này đã hết nên đơn hàng này chỉ có thể được đặt vào ngày mai"
+      ok-text="Thêm vào đơn hàng"
+      cancel-text="Hủy"
+      @confirm="$emit('addDish', dish, true)"
+      @cancel="cancel"
+    >
+      <a-button
+        v-if="!this.dish.amountAvailable > 0"
+        class="add-dish-button"
+        type="primary"
+        >Thêm đơn sau hôm nay</a-button
+      >
+    </a-popconfirm>
   </a-card>
 </template>
 
@@ -30,6 +45,11 @@ import convertVND from "@/util/moneyformat";
 export default {
   props: {
     dish: Object,
+  },
+  computed: {
+    sellAble() {
+      return this.dish.isAvailable && this.dish.amountAvailable > 0;
+    },
   },
   methods: {
     addToCart() {

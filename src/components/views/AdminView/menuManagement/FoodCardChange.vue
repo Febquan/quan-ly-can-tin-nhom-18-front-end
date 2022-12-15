@@ -32,26 +32,51 @@
           "
         />
       </h4>
-      <a-tag
-        v-if="!changeState"
-        class="food-status"
-        :color="product.isAvailable ? 'green' : 'red'"
-        >{{ product.isAvailable ? "Còn hàng" : "Hết hàng" }}</a-tag
-      >
-      <a-select
-        :value="product.isAvailable ? 'Còn hàng' : 'Hết hàng'"
-        @change="changeAvailable"
-        size="small"
-        v-if="changeState"
-      >
-        <a-select-option :value="true">Còn hàng</a-select-option>
-        <a-select-option :value="false">Hết hàng</a-select-option>
-      </a-select>
+      <div class="number-available">
+        <a-tag
+          v-if="!changeState"
+          class="food-status"
+          :color="product.isAvailable ? 'green' : 'red'"
+          >{{ product.isAvailable ? "Còn hàng" : "Hết hàng" }}</a-tag
+        >
+        <a-tag
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 22px;
+            font-size: 1rem;
+          "
+          v-if="!changeState"
+          >{{ this.product.amountAvailable }} /
+          {{ this.product.everyDayAmount }} suất
+        </a-tag>
+        <a-select
+          :value="product.isAvailable ? 'Còn hàng' : 'Hết hàng'"
+          @change="changeAvailable"
+          size="medium"
+          v-if="changeState"
+        >
+          <a-select-option :value="true">Còn hàng</a-select-option>
+          <a-select-option :value="false">Hết hàng</a-select-option>
+        </a-select>
+        <a-input-number
+          :min="0"
+          v-if="changeState"
+          v-model:value="product.amountAvailable"
+        ></a-input-number>
+        <span style="font-size: 1.3rem" v-if="changeState">/</span>
+        <a-input-number
+          :min="0"
+          v-if="changeState"
+          v-model:value="product.everyDayAmount"
+        ></a-input-number>
+      </div>
       <a-textarea
         class="info"
         v-if="this.product.type == 'Dish'"
         v-model:value="product.info"
-        :autosize="{ minRows: 2, maxRows: 3 }"
+        :autosize="{ Rows: 2, maxRows: 3 }"
         :disabled="!changeState"
         placeholder="Thông tin thêm về món ăn, một phần ăn bao gồm những gì ?"
       />
@@ -122,6 +147,8 @@ export default {
           formData.append("type", this.product.type);
           formData.append("name", this.product.name);
           formData.append("price", this.product.price);
+          formData.append("amountAvailable", this.product.amountAvailable);
+          formData.append("everyDayAmount", this.product.everyDayAmount);
           formData.append("isAvailable", this.product.isAvailable);
           if (this.file) {
             formData.append("image", this.file);
@@ -339,5 +366,9 @@ export default {
 }
 .name-change {
   font-size: 2rem;
+}
+.number-available {
+  display: flex;
+  gap: 10px;
 }
 </style>

@@ -10,14 +10,12 @@
       <h4 class="extraFood-price">
         <span>Giá:</span> {{ this.convertVND(this.extraFood.price) }}
       </h4>
-      <a-tag
-        class="extraFood-status"
-        :color="extraFood.isAvailable ? 'green' : 'red'"
-        >{{ extraFood.isAvailable ? "Còn hàng" : "Hết hàng" }}</a-tag
-      >
+      <a-tag class="extraFood-status" :color="sellAble ? 'green' : 'red'">{{
+        sellAble ? "Còn hàng" : "Hết hàng"
+      }}</a-tag>
       <PlusCircleFilled
         class="plus"
-        :class="extraFood.isAvailable ? 'available' : 'unAvailable'"
+        :class="sellAble ? 'available' : 'unAvailable'"
       ></PlusCircleFilled>
     </div>
   </a-card>
@@ -29,9 +27,18 @@ import convertVND from "@/util/moneyformat";
 export default {
   props: {
     extraFood: Object,
+    future: Boolean,
   },
   components: {
     PlusCircleFilled,
+  },
+  computed: {
+    sellAble() {
+      return (
+        (this.extraFood.isAvailable && this.extraFood.amountAvailable > 0) ||
+        this.future
+      );
+    },
   },
   methods: {
     addToCart() {

@@ -4,7 +4,7 @@
     title="Các đơn hàng của bạn"
     maskClosable="true"
     :centered="true"
-    @cancel="$emit('closeOrderModal')"
+    @cancel="closeModal"
   >
     <template #footer>
       <div class="footer-container">
@@ -98,6 +98,7 @@
           :disabledTime="disabledTime"
           placeholder="Thời gian nhận hàng (bắt buộc)"
           :show-time="{ defaultValue: dayjs() }"
+          :showNow="!isFutureOrder"
         />
         <a-checkbox class="check-box" v-model:checked="onSite"
           >Ăn tại căn tin ?</a-checkbox
@@ -127,13 +128,25 @@ export default {
     isGuest() {
       return this.$store.getters.getGuestState;
     },
+    isFutureOrder() {
+      let temp = false;
+      this.getCart.forEach((dish) => {
+        if (dish.object.future == true) temp = true;
+      });
+
+      return temp;
+    },
   },
   methods: {
+    closeModal() {
+      this.arrive_at = null;
+      this.$emit("closeOrderModal");
+    },
     delOrder(product) {
       this.$store.dispatch("cart/delCart", product);
     },
     getDisabledHours(date, month, year) {
-      var hours = [];
+      var hours = [0, 1, 2, 3, 4, 5, 19, 20, 21, 22, 23]; //CLOSED HOUR
       const thisDate = dayjs();
       if (
         thisDate.date() === date &&
@@ -156,7 +169,11 @@ export default {
       return minutes;
     },
     disabledDate(current) {
-      return current < dayjs().startOf("day");
+      if (!this.isFutureOrder) {
+        return current < dayjs().startOf("day");
+      } else {
+        return current < dayjs().startOf("day").add(1, "day");
+      }
     },
     disabledTime(h) {
       const moment = dayjs(h);
@@ -186,6 +203,7 @@ export default {
           pauseOnHover: false,
         });
         this.$emit("closeOrderModal");
+        this.arrive_at = null;
         this.$store.dispatch("cart/resetCart");
       } catch (error) {
         this.isLoading = false;

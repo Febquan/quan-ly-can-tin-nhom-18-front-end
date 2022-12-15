@@ -44,9 +44,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 10vh;
   font-size: 1.2rem;
   user-select: none;
-  height: 77vh;
 }
 </style>

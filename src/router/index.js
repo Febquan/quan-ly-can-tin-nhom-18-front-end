@@ -14,6 +14,8 @@ import StorageChange from "@/components/views/AdminView/storageManagement/Storag
 import MenuManagement from "@/components/views/AdminView/menuManagement/menuManagement.vue";
 import MenuInput from "@/components/views/AdminView/menuManagement/menuInput.vue";
 import MenuChange from "@/components/views/AdminView/menuManagement/menuChange.vue";
+import DailyAmount from "@/components/views/AdminView/sellManagement/DailyAmountManagement.vue";
+import DailyBusiness from "@/components/views/AdminView/sellManagement/DailyBusiness.vue";
 import store from "@/store";
 const routes = [
   {
@@ -47,7 +49,7 @@ const routes = [
     path: "/admin",
     name: "AdminMainView",
     component: AdminMainView,
-    meta: { requiresAuth: true },
+    meta: { requiresAdminAuth: true },
     children: [
       {
         path: "orderManagement",
@@ -94,6 +96,16 @@ const routes = [
         name: "MenuChange",
         component: MenuChange,
       },
+      {
+        path: "dailyAmount",
+        name: "DailyAmount",
+        component: DailyAmount,
+      },
+      {
+        path: "dailyBusiness",
+        name: "DailyBusiness",
+        component: DailyBusiness,
+      },
     ],
   },
   // {
@@ -116,6 +128,13 @@ router.beforeEach(function (to, _, next) {
     to.meta.requiresAuth &&
     !store.getters.getLoginState &&
     !store.getters.getGuestState
+  ) {
+    next("/");
+  }
+  if (
+    to.meta.requiresAdminAuth &&
+    !store.getters.getLoginState &&
+    !store.getters.getAdminState
   ) {
     next("/");
   } else {
