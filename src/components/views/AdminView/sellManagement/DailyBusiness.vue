@@ -1,7 +1,13 @@
 <template>
   <div class="container">
     <div class="menuManagement-container">
-      <div class="container-warp"></div>
+      <div class="container-warp">
+        <h1 class="day-name">Kết toán ngày {{}} 15/10/2020</h1>
+
+        <h2 class="section-name">Chi phí vận hành</h2>
+        <h2 class="section-name">Doanh thu</h2>
+        <h2 class="section-name">Lợi nhuận</h2>
+      </div>
     </div>
   </div>
 </template>
@@ -14,35 +20,13 @@ import dayjs from "dayjs";
 export default {
   components: {},
 
-  async mounted() {
-    const res = await this.$axios.get("/user/seeAllFood");
-    this.food = res.data.food;
-    this.dish = this.food.dish;
-    this.extraFood = this.food.extraFood;
-  },
+  async mounted() {},
 
-  methods: {
-    onDishSearch() {
-      this.dish = this.food.dish.filter((item) =>
-        item.name.toLowerCase().includes(this.dishSearch.toLowerCase())
-      );
-    },
-    onExtraFoodSearch() {
-      this.extraFood = this.food.extraFood.filter((item) =>
-        item.name.toLowerCase().includes(this.extraFoodSearch.toLowerCase())
-      );
-    },
-  },
+  methods: {},
   data() {
     return {
       convertVND,
       dayjs,
-      food: [],
-      dish: [],
-      extraFood: [],
-
-      dishSearch: "",
-      extraFoodSearch: "",
     };
   },
 };
@@ -77,9 +61,14 @@ export default {
   border-radius: 20px;
   padding: 50px;
 }
-.container-warp > h1 {
-  margin-bottom: 10px;
 
-  font-size: 2.8rem;
+.day-name {
+  text-align: left;
+  margin-bottom: 10px;
+  font-size: 2rem;
+  font-weight: bold;
+}
+.section-name {
+  text-align: left;
 }
 </style>

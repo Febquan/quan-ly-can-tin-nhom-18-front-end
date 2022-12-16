@@ -37,6 +37,7 @@
               v-model:value="FFAD.price"
               :formatter="(num) => convertVND(num)"
               :step="1000"
+              :min="0"
               :parser="
                 (text) =>
                   text.replace('VNĐ', '').replaceAll(',', '').replace(/\s/g, '')
@@ -127,6 +128,7 @@
                 this.convertVND(batch.buyPrice)
               }}</span>
               <a-input-number
+                :min="0"
                 class="input-change"
                 v-if="changeState"
                 style="width: 100%"

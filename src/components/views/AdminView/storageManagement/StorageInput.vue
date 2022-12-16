@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" @click="cout">
     <div class="StorageInput-container">
       <section class="input">
         <h1>Nhập kho sản phẩm</h1>
@@ -99,9 +99,9 @@ export default {
     isValidInput() {
       return (
         this.name &&
-        (this.imgURL || this.options.find((el) => el.value == this.name)) &&
+        (this.imgURL || this.isExits) &&
         this.buyPrice &&
-        this.price &&
+        (this.price || this.isExits) &&
         this.expiredDated &&
         this.amount
       );

@@ -261,7 +261,7 @@ export default {
   transition: box-shadow 300ms;
   display: grid;
   grid-template-columns: 2fr 3fr;
-  grid-template-row: 1fr;
+  grid-template-rows: 1fr;
   padding: 30px;
   gap: 25px;
 }
