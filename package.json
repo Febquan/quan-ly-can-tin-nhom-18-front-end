@@ -20,6 +20,7 @@
     "stylus": "^0.59.0",
     "stylus-loader": "^3.0.2",
     "vue": "^3.2.13",
+    "vue-google-charts": "^1.1.0",
     "vue-router": "^4.0.3",
     "vue-socket.io": "^3.0.10",
     "vue3-qrcode-reader": "^0.0.1",

@@ -199,6 +199,8 @@ export default createStore({
     isLogin: false,
     isGuest: false,
     isAdmin: false,
+    openHour: 6,
+    closeHour: 18,
   },
   getters: {
     getLoginState(state) {
@@ -209,6 +211,12 @@ export default createStore({
     },
     getAdminState(state) {
       return state.isAdmin;
+    },
+    getOpenHour(state) {
+      return state.openHour;
+    },
+    getCloseHour(state) {
+      return state.closeHour;
     },
   },
   mutations: {

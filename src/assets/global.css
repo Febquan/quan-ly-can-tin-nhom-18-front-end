@@ -67,3 +67,26 @@ h6 {
 #__next {
   isolation: isolate;
 }
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: none;
+  scrollbar-color: #ababab #d5d3d3;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #d5d3d3;
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #ababab;
+  border-radius: 10px;
+  border: 0px solid #ffffff;
+}

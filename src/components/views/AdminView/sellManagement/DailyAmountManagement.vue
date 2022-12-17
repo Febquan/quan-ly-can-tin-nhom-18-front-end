@@ -1,6 +1,15 @@
 <template>
   <div class="container">
-    <div class="menuManagement-container">
+    <h1 v-if="!isOverWork" class="off-time">
+      Chỉ có thể truy cập vào trang này khi hết phiên bán hàng
+      {{ $store.getters.getCloseHour }}h-{{ $store.getters.getOpenHour }}h
+    </h1>
+    <div
+      class="menuManagement-container"
+      :class="{
+        isOverWork: !isOverWork,
+      }"
+    >
       <div class="container-warp">
         <h1>Món chính</h1>
 
@@ -58,6 +67,14 @@ export default {
     this.dish = this.food.dish;
     this.extraFood = this.food.extraFood;
   },
+  computed: {
+    isOverWork() {
+      return (
+        dayjs().get("hour") >= this.$store.getters.getCloseHour ||
+        dayjs().get("hour") < this.$store.getters.getOpenHour
+      );
+    },
+  },
 
   methods: {
     onDishSearch() {
@@ -88,6 +105,7 @@ export default {
 
 <style scoped>
 .container {
+  position: relative;
   background-color: var(--white);
   height: 100%;
   width: 100%;
@@ -131,5 +149,23 @@ export default {
   width: 50%;
   justify-self: center;
   grid-column: 1 / -1;
+}
+.isOverWork {
+  -webkit-filter: blur(10px);
+  -moz-filter: blur(10px);
+  -o-filter: blur(10px);
+  -ms-filter: blur(10px);
+  filter: blur(10px);
+  pointer-events: none;
+}
+.off-time {
+  width: 40%;
+  font-size: 2rem;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translateX(50%) translateY(-50%);
+  font-weight: bold;
+  z-index: 1000;
 }
 </style>
