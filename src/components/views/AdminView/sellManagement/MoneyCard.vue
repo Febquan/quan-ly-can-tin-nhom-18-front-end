@@ -3,7 +3,7 @@
     <span class="name">{{ this.item.name }}</span>
     <span class="amount">{{ this.item.amount }}</span>
     <span class="price" v-if="!isChange">{{
-      this.convertVND(this.item.cost)
+      this.convertVND(this.item.cost.toFixed(2).replace(/\.00$/, ""))
     }}</span>
     <a-input-number
       class="cost-change"
@@ -12,6 +12,7 @@
       :formatter="(num) => convertVND(num)"
       :step="1000"
       :min="0"
+      :disabled="thing.kind == 'FastFoodAndDrink'"
       :parser="
         (text) => text.replace('VNĐ', '').replaceAll(',', '').replace(/\s/g, '')
       "

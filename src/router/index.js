@@ -16,6 +16,7 @@ import MenuInput from "@/components/views/AdminView/menuManagement/menuInput.vue
 import MenuChange from "@/components/views/AdminView/menuManagement/menuChange.vue";
 import DailyAmount from "@/components/views/AdminView/sellManagement/DailyAmountManagement.vue";
 import DailyBusiness from "@/components/views/AdminView/sellManagement/DailyBusiness.vue";
+import BusinessReport from "@/components/views/AdminView/sellManagement/BusinessReport.vue";
 import store from "@/store";
 const routes = [
   {
@@ -105,6 +106,11 @@ const routes = [
         path: "dailyBusiness",
         name: "DailyBusiness",
         component: DailyBusiness,
+      },
+      {
+        path: "businessReport",
+        name: "BusinessReport",
+        component: BusinessReport,
       },
     ],
   },

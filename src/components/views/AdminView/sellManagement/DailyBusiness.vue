@@ -1,59 +1,13 @@
 <template>
   <div class="container">
     <div class="menuManagement-container">
-      <div class="container-warp">
-        <h1 class="day-name">
-          Kết toán ngày
-          {{ this.dayjs(this.todayBusiness.date).format("DD/MM/YYYY") }}
-        </h1>
-        <div class="grid">
-          <MoneyTable
-            :tableName="'Chi phí vận hành'"
-            v-if="todayBusiness.expenses"
-            :source="todayBusiness.expenses"
-            :total="todayBusiness.totalExpenses"
-            :id="todayBusiness._id"
-            @isZero="setZero"
-            @statusChange="setStatus"
-          ></MoneyTable>
-          <MoneyTable
-            v-if="
-              todayBusiness.status == 'waitingConfirm' && todayBusiness.loss
-            "
-            :tableName="'Tồn kho ngày'"
-            :source="todayBusiness.loss"
-            :total="todayBusiness.totalLoss"
-            :key="2"
-          ></MoneyTable>
-          <MoneyTable
-            v-if="
-              todayBusiness.status == 'waitingConfirm' && todayBusiness.selling
-            "
-            :tableName="'Doanh thu'"
-            :source="todayBusiness.selling"
-            :total="todayBusiness.income"
-            :key="3"
-          ></MoneyTable>
-          <span style="color: red; font-size: 1rem" v-if="isZero"
-            >Vui lòng cập nhật giá trị chi phí vận hành để kết toán</span
-          >
-          <div class="buttons-container">
-            <a-button
-              class="button"
-              :disabled="isZero"
-              @click="endDayCalculate"
-              type="primary"
-              >Kết toán</a-button
-            >
-            <a-button
-              class="button"
-              v-if="todayBusiness.status == 'waitingConfirm'"
-              type="primary"
-              >Xác nhận</a-button
-            >
-          </div>
-        </div>
-      </div>
+      <BusinessNote
+        v-for="Business in Businesses"
+        :key="Business._id"
+        :business="Business"
+        :zero="Business.zero"
+        @reloadPls="initialFetch"
+      ></BusinessNote>
     </div>
   </div>
 </template>
@@ -61,50 +15,37 @@
 <script>
 import convertVND from "@/util/moneyformat";
 import dayjs from "dayjs";
-
-import MoneyTable from "./MoneyTable.vue";
+import BusinessNote from "./BusinessNote.vue";
 export default {
-  components: { MoneyTable },
-
+  components: {
+    BusinessNote,
+  },
   async created() {
-    try {
-      const res1 = await this.$axios.post("/admin/findDailyBusiness", {
-        inDuration: "day",
-        atTime: dayjs(),
-      });
-      this.todayBusiness = res1.data.content[0];
-    } catch (err) {
-      console.log(err);
-    }
+    await this.initialFetch();
   },
   computed: {},
   methods: {
-    setZero(val) {
-      this.isZero = val;
-    },
-    setStatus(val) {
-      this.todayBusiness.status = val;
-    },
-    async endDayCalculate() {
+    async initialFetch() {
       try {
-        await this.$axios.post("admin/endOfDayCalculating");
+        let res1 = await this.$axios.post("/admin/findDailyBusiness", {
+          notStatus: "completed",
+        });
 
-        this.$toast.success(`Kết toán thành công`, {
-          position: "bottom",
-          duration: 800,
-          queue: true,
-          max: 0,
-          pauseOnHover: false,
+        res1 = res1.data.content.sort((a, b) => {
+          return dayjs(b.date).diff(dayjs(a.date));
         });
-        this.todayBusiness.status = "waitingConfirm";
-      } catch (error) {
-        this.$toast.error(error.response.data.message, {
-          position: "bottom",
-          duration: 2000,
-          queue: true,
-          max: 0,
-          pauseOnHover: false,
-        });
+        this.Businesses = res1;
+        for (let i = 0; i < this.Businesses.length; i++) {
+          let zero = false;
+          for (let item of this.Businesses[i].expenses) {
+            if (item.cost == 0) {
+              zero = true;
+            }
+          }
+          this.Businesses[i].zero = zero;
+        }
+      } catch (err) {
+        console.log(err);
       }
     },
   },
@@ -112,9 +53,7 @@ export default {
     return {
       convertVND,
       dayjs,
-      todayBusiness: {},
-      isZero: true,
-      unConfirmDay: {},
+      Businesses: {},
     };
   },
 };
@@ -143,31 +82,5 @@ export default {
   padding: 40px;
   height: 100%;
   width: 100%;
-}
-.container-warp {
-  border: 2px solid var(--light-grey);
-  border-radius: 20px;
-  padding: 50px;
-}
-.grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-}
-.day-name {
-  text-align: center;
-  margin-bottom: 10px;
-  font-size: 2.5rem;
-  font-weight: bold;
-}
-.buttons-container {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-}
-.button {
-  height: 40px;
-  width: 12%;
-  font-size: 1.3rem;
 }
 </style>

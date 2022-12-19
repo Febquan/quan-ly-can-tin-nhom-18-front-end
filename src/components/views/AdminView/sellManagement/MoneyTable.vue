@@ -41,7 +41,7 @@
             <a-statistic
               :valueStyle="{ color: '#3f8600' }"
               :title="'Tổng ' + tableName.toLocaleLowerCase()"
-              :value="convertVND(sumMoney)"
+              :value="convertVND(sumMoney.toFixed(2))"
             />
           </div>
           <div class="buttons-container">
@@ -81,7 +81,6 @@ export default {
   props: {
     tableName: String,
     source: Array[Object],
-    total: Number,
     id: String,
   },
   components: { MoneyCard, GChart },
@@ -118,7 +117,7 @@ export default {
       try {
         await this.$axios.post("admin/updateDailyBusinessExpenses", {
           expenses: this.items,
-          totalExpense: this.totalExpense,
+          totalExpense: this.sumMoney,
           dailyBusinessId: this.id,
         });
 

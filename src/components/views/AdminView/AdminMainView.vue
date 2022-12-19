@@ -91,7 +91,9 @@
             >
           </a-menu-item>
           <a-menu-item key="12">
-            <router-link :to="{ name: '' }">Thống kê doanh số</router-link>
+            <router-link :to="{ name: 'BusinessReport' }"
+              >Thống kê doanh số</router-link
+            >
           </a-menu-item>
         </a-sub-menu>
       </a-menu>
