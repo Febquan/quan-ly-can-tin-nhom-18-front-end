@@ -3,7 +3,7 @@
     <div class="menuManagement-container">
       <BusinessNote
         v-for="Business in Businesses"
-        :key="Business._id"
+        :key="Business._id + dayjs().toString()"
         :business="Business"
         :zero="Business.zero"
         @reloadPls="initialFetch"
@@ -35,6 +35,7 @@ export default {
           return dayjs(b.date).diff(dayjs(a.date));
         });
         this.Businesses = res1;
+        console.log(this.Business);
         for (let i = 0; i < this.Businesses.length; i++) {
           let zero = false;
           for (let item of this.Businesses[i].expenses) {

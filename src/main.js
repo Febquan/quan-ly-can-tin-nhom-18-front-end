@@ -17,7 +17,7 @@ import { GlobalSocket } from "../plugins/socket";
 import { Notification } from "../plugins/notification";
 createApp(App)
   .use(GlobalAxios, {
-    baseUrl: "http://localhost:8081/",
+    baseUrl: process.env.VUE_APP_BACK_END_URL,
   })
   .use(GlobalSocket)
   .use(Notification)

@@ -3,7 +3,7 @@ import { createStore } from "vuex";
 import { ModuleAxios } from "../../plugins/axios";
 
 const axios = ModuleAxios({
-  baseUrl: "http://localhost:8081/",
+  baseUrl: process.env.VUE_APP_BACK_END_URL,
 });
 const productsModule = {
   namespaced: true,

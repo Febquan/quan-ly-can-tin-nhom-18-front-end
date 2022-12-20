@@ -8,7 +8,7 @@
       <MoneyTable
         :tableName="'Chi phí vận hành'"
         v-if="todayBusiness.expenses"
-        :source="todayBusiness.expenses"
+        :source="expenses"
         :id="todayBusiness._id"
         @isZero="setZero"
         @statusChange="setStatus"
@@ -16,13 +16,13 @@
       <MoneyTable
         v-if="todayBusiness.status == 'waitingConfirm' && todayBusiness.loss"
         :tableName="'Tồn kho ngày'"
-        :source="todayBusiness.loss"
+        :source="loss"
         :key="2"
       ></MoneyTable>
       <MoneyTable
         v-if="todayBusiness.status == 'waitingConfirm' && todayBusiness.selling"
         :tableName="'Doanh thu'"
-        :source="todayBusiness.selling"
+        :source="selling"
         :total="todayBusiness.income"
         :key="3"
       ></MoneyTable>
@@ -72,6 +72,15 @@ export default {
   computed: {
     todayBusiness() {
       return this.business;
+    },
+    expenses() {
+      return this.business.expenses;
+    },
+    selling() {
+      return this.business.selling;
+    },
+    loss() {
+      return this.business.loss;
     },
   },
   methods: {

@@ -130,6 +130,7 @@ export default {
         });
         this.$emit("isZero", this.isZero());
         this.$emit("statusChange", "uncompleted");
+        this.items = this.items.filter((el) => el.kind != "FastFoodAndDrink");
         this.toggleChange();
       } catch (error) {
         this.$toast.error(error.response.data.message, {
