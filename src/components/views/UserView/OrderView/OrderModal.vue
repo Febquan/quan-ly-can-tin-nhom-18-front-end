@@ -146,7 +146,7 @@ export default {
       this.$store.dispatch("cart/delCart", product);
     },
     getDisabledHours(date, month, year) {
-      var hours = [0, 1, 2, 3, 4, 5, 19, 20, 21, 22, 23]; //CLOSED HOUR
+      var hours = [0, 1, 2, 3, 4, 5, 18, 19, 20, 21, 22, 23]; //CLOSED HOUR
       const thisDate = dayjs();
       if (
         thisDate.date() === date &&
