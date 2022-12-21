@@ -185,10 +185,11 @@ export default {
   justify-items: center;
   align-content: center;
   padding: 40px;
+
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 .list-food{
-  width: 100%;
+  width: 90%;
 }
 
 .food-view {
@@ -207,7 +208,7 @@ export default {
 }
 .drink-container,
 .fast-food-container {
-  width: 90%;
+  width: 100%;
   justify-items: center;
   align-content: center;
   padding: 40px;
@@ -249,8 +250,8 @@ export default {
   }
 
   .dish-container {
-    width: 100%;
     column-gap: 10px;
+    padding: 20px 10px;
   }
 
   .fast-food-container,
@@ -266,6 +267,18 @@ export default {
   width: 100%;
 }
 
+}
+/* Tablet */
+@media only screen and (min-width:577px) and (max-width:px){
+  .list-food{
+    padding: 20px;
+  }
+  .fast-food-container,
+  .drink-container,
+  .dish-container {
+    padding: 20px 0;
+    column-gap: 10px;
+  }
 }
 
 </style>

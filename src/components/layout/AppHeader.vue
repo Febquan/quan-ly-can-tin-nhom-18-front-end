@@ -186,6 +186,11 @@ section > div > div {
 span{
   display: block;
 }
+@media only screen and (min-width:577px) and (max-width:992px){
+  section>div{
+    width: 80%;
+  }
+}
 @media only screen and (max-width: 576px) {
   .logo-name {
     font-size: 1.4rem;

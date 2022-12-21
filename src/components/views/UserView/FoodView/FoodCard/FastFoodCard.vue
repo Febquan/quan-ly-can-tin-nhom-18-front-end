@@ -1,5 +1,5 @@
 <template>
-  <a-card 
+  <a-card padding="0px"
    class="body-card pa-0" style="width: 200px; height: 200px;">
     <div class="fast-food-img-container">
       <img class="fast-food-img" alt="món ăn" :src="FastFood.imgUrl" />
@@ -115,7 +115,11 @@ export default {
 .unAvailable {
   color: var(--grey);
 }
+
 @media only screen and (max-width: 576px) {
+.dish-container{
+  padding: 20px 10px;
+}
 .fast-food-img-container {
   height: 80px;
   display: flex;
