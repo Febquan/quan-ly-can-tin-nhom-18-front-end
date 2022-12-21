@@ -33,7 +33,6 @@ const routes = [
     path: "/user/FoodView",
     name: "FoodView",
     component: FoodView,
-    meta: { requiresAuth: true },
   },
   {
     path: "/user/TrackMyOrder",
