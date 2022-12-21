@@ -118,4 +118,21 @@ export default {
 .unAvailable {
   color: var(--grey);
 }
+@media only screen and (max-width: 576px) {
+  .body-card {
+    width: 170px!important;
+    height: 170px!important;
+  }
+  .ant-card-body{
+    padding: 0;
+  }
+
+  .extraFood-description {
+    width: 120px;
+  }
+
+  .extraFood-info {
+    display: block;
+  }
+}
 </style>

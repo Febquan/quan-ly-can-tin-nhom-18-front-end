@@ -283,4 +283,9 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
+@media only screen and (max-width: 576px) {
+.order-info{
+  width: 90%;
+}
+}
 </style>

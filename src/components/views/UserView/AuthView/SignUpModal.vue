@@ -138,4 +138,15 @@ export default {
 .pas-noti {
   color: var(--primary);
 }
+@media only screen and (max-width: 576px) {
+  .ant-input {
+  width: 100%;
+}
+.ant-input-password {
+  width: 100%;
+}
+.link-container {
+  width: 100%;
+}
+}
 </style>

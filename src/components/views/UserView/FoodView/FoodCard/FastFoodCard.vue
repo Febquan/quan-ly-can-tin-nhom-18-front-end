@@ -1,5 +1,6 @@
 <template>
-  <a-card class="body-card" style="width: 200px; height: 200px">
+  <a-card 
+   class="body-card pa-0" style="width: 200px; height: 200px;">
     <div class="fast-food-img-container">
       <img class="fast-food-img" alt="món ăn" :src="FastFood.imgUrl" />
     </div>
@@ -113,5 +114,46 @@ export default {
 }
 .unAvailable {
   color: var(--grey);
+}
+@media only screen and (max-width: 576px) {
+.fast-food-img-container {
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fast-food-img {
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+.body-card {
+  max-width: 180px;
+  max-height: 160px;
+  border-radius: 0.5rem;
+  padding: 0;
+}
+.fast-food-price {
+  text-align: start;
+}
+.fast-food-name {
+  font-weight: bold;
+  font-size: 0.7rem;
+  max-width: 100%;
+}
+.ant-card-body{
+  padding: 10px!important;
+}
+.fast-food-price {
+  font-size: 0.5rem;
+  color: var(--primary-darker);
+}
+.fast-food-price > span {
+  font-size: 0.7rem;
+}
+.fast-food-status {
+  font-size: 0.5rem;
+}
 }
 </style>

@@ -145,4 +145,15 @@ export default {
   justify-content: center;
   align-items: center;
 }
+@media only screen and (max-width: 576px) {
+  .ant-input {
+  width: 100%;
+}
+.ant-input-password {
+  width: 100%;
+}
+.link-container {
+  width: 100%;
+}
+}
 </style>

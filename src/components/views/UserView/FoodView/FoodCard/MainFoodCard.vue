@@ -1,5 +1,5 @@
 <template>
-  <a-card class="body-card" style="width: 300px">
+  <div class="body-card">
     <div class="dish-img-container">
       <img class="dish-img" alt="món ăn" :src="dish.imgUrl" />
     </div>
@@ -37,7 +37,7 @@
         >Thêm đơn sau hôm nay</a-button
       >
     </a-popconfirm>
-  </a-card>
+  </div>
 </template>
 
 <script>
@@ -80,9 +80,11 @@ export default {
   border-radius: 1rem;
 }
 .body-card {
+  width: 300px;
   border-radius: 1.5rem;
   box-shadow: 0px 0px 10px rgb(208, 208, 208);
   transition: box-shadow 300ms;
+  padding: 20px;
 }
 .body-card:hover {
   box-shadow: 0px 0px 20px rgb(167, 167, 167);
@@ -120,5 +122,42 @@ export default {
   border-radius: 10px;
   position: relative;
   bottom: 0px;
+}
+@media only screen and (max-width: 576px) {
+  .body-card{
+    width: 100%;
+    border-radius: 0.5rem;
+    padding: 10px;
+    border: 1px solid lightgrey;
+  }
+.body-card:hover {
+  box-shadow: 0px 0px 20px rgb(167, 167, 167);
+}
+.dish-description {
+  height: 60px;
+  margin-top: 5px;
+}
+.dish-price {
+  text-align: start;
+}
+.dish-name {
+  font-size: 1.2rem;
+}
+.dish-price {
+  font-size: 1rem;
+}
+.dish-price > span {
+  font-size: 1rem;
+}
+.dish-info{
+  display: block;
+}
+.dish-status{
+  float: left;
+}
+.add-dish-button {
+  margin-top: 10px;
+}
+
 }
 </style>

@@ -101,10 +101,24 @@ export default {
 }
 .order-container.left {
   border-right: 2px solid var(--grey);
+  border-bottom:0;
 }
 .model-container {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+@media only screen and (max-width: 576px) {
+  .modal-container {
+    width: 100%;
+    display: block;
+  }
+  .order-container{
+    grid-template-columns: 1/-1;
+  }
+  .order-container.left {
+    border-right: 0;
+    border-bottom: 2px solid var(--grey);
+  }
 }
 </style>

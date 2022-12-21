@@ -31,7 +31,7 @@
           <template #icon>
             <LoginOutlined />
           </template>
-          Login
+          <span class="span">Login</span>
         </a-button>
         <a-button
           size="medium"
@@ -41,13 +41,13 @@
           <template #icon>
             <UsergroupAddOutlined />
           </template>
-          Sign Up
+          <span class="span">Sign Up</span>
         </a-button>
         <a-button size="medium" @click="logout" v-if="isLogin && !isGuest">
           <template #icon>
             <UsergroupAddOutlined />
           </template>
-          Log Out
+          <span class="span">Log Out</span>
         </a-button>
       </div>
     </div>
@@ -94,7 +94,7 @@ export default {
       showLogin: false,
       showSignUp: false,
       showOrderModal: false,
-      showTrackMyOrderModal: false,
+      showTrackMyOrderModal: false
     };
   },
   computed: {
@@ -182,5 +182,76 @@ section > div > div {
 }
 .logo {
   height: 8vh;
+}
+span{
+  display: block;
+}
+@media only screen and (max-width: 576px) {
+  .logo-name {
+    font-size: 1.4rem;
+    font-weight: 800;
+  }
+
+  .logo {
+    height: 7vh;
+  }
+
+  section>div {
+    width: 90%;
+  }
+
+  #login-btn,#signup-btn {
+    display: none;
+  }
+  #nav-btn{
+  display: block !important;
+  }
+  #navbar {
+    display: block;
+    list-style: none;
+    text-align: center;
+    background-color: var(--primary-darker);
+    width: 70%;
+    padding-top: 10vh;
+    height: 100vh;
+  }
+
+  #navbar-nav {
+    list-style: none;
+    padding: 0;
+
+  }
+
+  #navbar-nav a {
+    color: snow;
+    font-size: 1.4rem;
+  }
+
+  #navbar .logo-container {
+    width: 100%;
+    flex-direction: column;
+    height: auto;
+  }
+
+  #navbar .logo {
+    height: 15vh;
+  }
+
+  #navbar .logo-name {
+    font-size: 2rem;
+  }
+  .close-nav{
+    position: absolute;
+    right: 0;
+    width: 15%;
+    top: 2%;
+  }
+  .close-nav i{
+    font-size: 1.4rem;
+    color: var(--white);
+  }
+  .span{
+    display: none;
+  }
 }
 </style>

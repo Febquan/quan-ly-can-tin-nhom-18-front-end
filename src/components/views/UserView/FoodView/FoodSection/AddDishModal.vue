@@ -4,7 +4,6 @@
     title="Thêm món ăn"
     maskClosable="true"
     :centered="true"
-    width="50%"
     @cancel="cancel"
   >
     <template #footer>
@@ -211,6 +210,9 @@ export default {
   justify-content: center;
   align-items: center;
 }
+.ant-modal{
+  width:50%;
+}
 .modal-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -265,5 +267,49 @@ export default {
   top: -6px;
   right: -6px;
   color: var(--grey);
+}
+@media only screen and (max-width: 576px) {
+  .ant-modal {
+    width: 100%;
+  }
+
+  .dish-description {
+    max-height: 100%;
+    width: 85%;
+  }
+
+  .dish-info-all {
+    grid-column: -1/1;
+  }
+
+  .dish-description {
+    grid-column: -1/1;
+  }
+
+  .extra-object {
+    grid-column: -1/1;
+  }
+  .extra-object-container {
+    overflow:auto;
+    height:fit-content;
+  }
+  .dish-name {
+    font-size: 2rem;
+    color: var(--primary);
+  }
+
+
+
+  .dish-info-specific {
+    margin: 8px auto;
+    max-width: 85%;
+  }
+
+  .extra-object-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+
 }
 </style>
