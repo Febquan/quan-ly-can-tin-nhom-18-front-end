@@ -146,6 +146,9 @@ export default {
 .dish-price {
   font-size: 1rem;
 }
+.dish-img-container{
+  height: 130px;
+}
 .dish-price > span {
   font-size: 1rem;
 }

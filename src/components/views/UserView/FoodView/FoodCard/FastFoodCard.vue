@@ -142,8 +142,11 @@ export default {
   font-size: 0.7rem;
   max-width: 100%;
 }
-.ant-card-body{
+/* .ant-card-body{
   padding: 10px!important;
+} */
+.fast-food-status{
+  margin: 0;
 }
 .fast-food-price {
   font-size: 0.5rem;
