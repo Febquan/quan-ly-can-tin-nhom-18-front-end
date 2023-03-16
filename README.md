@@ -23,6 +23,10 @@ Cách setup đồ án
 			v.v
 
 2.Chạy offline :
+	-env file :
+		VUE_APP_BACK_END_URL=http://localhost:8081
+		# VUE_APP_BACK_END_URL=https://can-tin-nhom-18-backend.onrender.com
+		
 	-Trong thư mục source code sẽ có front-end và back-end
 	-Chạy back-end trước:
 		+Mở thư mục back-end bằng Vscode và gõ :
