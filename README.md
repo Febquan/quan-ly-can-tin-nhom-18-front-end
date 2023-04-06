@@ -1,6 +1,7 @@
 #Nhập môn công nghệ phần mềm
 Nhóm 18
 20120553-20120567-20120565-20120581
+all works was done by me ! 
 
 Cách setup đồ án
 
@@ -40,3 +41,26 @@ Cách setup đồ án
 			http://localhost:8080/
 
 	-Tài khoản admin và user sẽ giống như trên
+
+
+SOME PREVIEW :
+
+ADMID PAGE: 
+-Các chức năng ở bên trái đều có thể chạy được 
+chức năng nổi bật:
+	-Cập nhập đơn hàng theo thời gian thực dùng socket.io.
+	-Thanh toán qr.
+	-Kết toán tự động theo ngày/ tháng, dựa trên những sản phẩm đã bán
+	-Tự động quản lý kho, khách hàng mua trực tiếp từ kho hàng, có quản lý hết hạn, quản lý hết hàng...
+	
+![image](https://user-images.githubusercontent.com/77763474/230498608-479a92a3-70d0-4a13-b494-5f7e8bb217f6.png)
+
+
+Client PAGE:
+-Chức năng đặt hàng cơ bản, tự tính tiền, thanh toán ....
+chức năng nổi bật:
+	-Email nhận đơn hàng không cần phải đăng nhập
+	-Đặt lịch tương laim, quản lý kho hàng + món ăn chuẩn bị cho admin trong ngày tương lai
+	-Quản lý các đơn đã đặt qua email, nhận thông báo thời gian thực đơn hàng đã xong dùng socket.io
+
+![image](https://user-images.githubusercontent.com/77763474/230500024-8a4f06a9-18ed-4722-843f-1fbe28ea5dab.png)
